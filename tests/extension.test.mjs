@@ -44,8 +44,12 @@ test("privacy stylesheet contains every fixture-backed selector contract", async
     css.indexOf("/* Time and unread count"),
     css.indexOf('html[data-wa-privacy-enabled="true"][data-wa-privacy-message-preview="true"]'),
   );
+  const messageRules = css.slice(
+    css.indexOf("/* Match WhatsApp's tokenized test IDs"),
+    css.indexOf("/* This positive message-pane scope"),
+  );
 
-  assert.match(css, /--wa-privacy-style-version: 3/);
+  assert.match(css, /--wa-privacy-style-version: 5/);
   assert.match(nameRules, /\[data-testid="cell-frame-label"\]/);
   assert.doesNotMatch(nameRules, /last-msg-status/);
   assert.match(activityRules, /data-wa-privacy-time-unread-count/);
@@ -53,6 +57,17 @@ test("privacy stylesheet contains every fixture-backed selector contract", async
   assert.match(activityRules, /icon-unread-count/);
   assert.match(activityRules, /:not\(:has\(/);
   assert.match(previewRules, /\[data-testid="last-msg-status"\]:not\(:hover\)/);
+  assert.match(messageRules, /\[data-testid~="selectable-text"\]/);
+  assert.match(
+    messageRules,
+    /:not\(\s*\[data-testid~="selectable-text"\] \[data-testid~="selectable-text"\]\s*\)/,
+  );
+  assert.doesNotMatch(messageRules, /:is\(span, a, strong\)/);
+  assert.match(messageRules, /:not\(\[data-testid~="search-the-web-link"\]\)/);
+  assert.match(
+    messageRules,
+    /\[data-testid="forwarded-header"\] span:has\(> \[data-testid~="search-the-web-link"\]\):not\(:hover\)/,
+  );
   assert.doesNotMatch(css, /\[data-testid="last-msg-status"\]\s*>/);
   assert.doesNotMatch(css, /drawer-fullscreen[^*]*filter:/s);
 });

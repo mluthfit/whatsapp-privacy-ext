@@ -1,6 +1,6 @@
 namespace WAPrivacy {
   export const SETTINGS_KEY = "privacySettings";
-  export const STYLE_VERSION = "3";
+  export const STYLE_VERSION = "5";
 
   export type SettingPath =
     | "enabled"

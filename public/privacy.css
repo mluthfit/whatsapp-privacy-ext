@@ -1,6 +1,6 @@
 :root {
   --wa-privacy-blur: 7px;
-  --wa-privacy-style-version: 3;
+  --wa-privacy-style-version: 5;
 }
 
 /* Chat titles, community labels, active conversation titles, and conversation senders. */
@@ -43,10 +43,15 @@ html[data-wa-privacy-enabled="true"][data-wa-privacy-message-preview="true"]
   filter: blur(var(--wa-privacy-blur)) !important;
 }
 
-/* Message metadata is intentionally absent so standalone times and checks stay visible. */
+/* Match WhatsApp's tokenized test IDs at the outermost text owner. */
 html[data-wa-privacy-enabled="true"][data-wa-privacy-messages-calls="true"]
   [data-testid="conversation-panel-messages"] [data-testid="msg-container"]
-  :is(span, a, strong)[data-testid="selectable-text"]:not(:hover),
+  [data-testid~="selectable-text"]:not(
+    [data-testid~="selectable-text"] [data-testid~="selectable-text"]
+  ):not([data-testid~="search-the-web-link"]):not(:hover),
+html[data-wa-privacy-enabled="true"][data-wa-privacy-messages-calls="true"]
+  [data-testid="conversation-panel-messages"] [data-testid="msg-container"]
+  [data-testid="forwarded-header"] span:has(> [data-testid~="search-the-web-link"]):not(:hover),
 html[data-wa-privacy-enabled="true"][data-wa-privacy-messages-calls="true"]
   [data-testid="conversation-panel-messages"] [data-testid="msg-container"]
   :is(

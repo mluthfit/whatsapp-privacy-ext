@@ -78,7 +78,7 @@ Conversation header names and avatars inherit the `Name` and `Avatar` settings f
 
 | Category | Included content | Exclusions |
 | --- | --- | --- |
-| Messages & Calls | Incoming and outgoing message text, captions, quoted-message text, textual link-preview details, complete voice-call cards, complete video-call cards, call direction, call status, call duration, and call details | Standalone message timestamps and delivery/read check marks |
+| Messages & Calls | Incoming and outgoing message text, emoji, expanded message text, contextual search links, captions, quoted-message text, textual link-preview details, complete voice-call cards, complete video-call cards, call direction, call status, call duration, and call details | Standalone message timestamps and delivery/read check marks |
 | Media & Attachments | Images, videos, GIFs, stickers, voice notes, audio players, waveforms, audio durations, audio transcriptions, documents, filenames, file types, file sizes, document thumbnails, link thumbnails, and location thumbnails | Visual media after it has been opened in WhatsApp's fullscreen viewer |
 | Text Input | User-entered text currently present in the conversation composer | Empty-input placeholder text and composer action icons |
 
@@ -166,6 +166,7 @@ As a user, I want separate controls for messages and calls, media and attachment
 - AC-3.3: `Text Input` blurs only user-entered composer content and does not blur an empty placeholder or composer action icons.
 - AC-3.4: Standalone message timestamps and delivery/read check marks remain visible.
 - AC-3.5: Opening visual media in WhatsApp's fullscreen viewer displays the fullscreen media without extension blur.
+- AC-3.6: Emoji, contextual search links, and content revealed after expanding a long message follow `Messages & Calls` without requiring a DOM rescan.
 
 #### US-4: Reveal on Hover
 
