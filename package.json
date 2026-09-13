@@ -1,0 +1,12 @@
+{
+  "name": "whatsapp-privacy-ext",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.2.9",
+    "typescript": "^7.0.2"
+  }
+}
