@@ -1,0 +1,98 @@
+:root {
+  --wa-privacy-blur: 7px;
+  --wa-privacy-style-version: 1;
+}
+
+/* Chat and search names, plus the active conversation title and group senders. */
+html[data-wa-privacy-enabled="true"][data-wa-privacy-name="true"]
+  :is([data-testid="chat-list"] [role="row"], [data-testid="archived-chatlist"] [role="listitem"])
+  [data-testid="cell-frame-title"]:not(:hover),
+html[data-wa-privacy-enabled="true"][data-wa-privacy-name="true"]
+  [data-testid="conversation-header"] [data-testid="conversation-info-header-chat-title"]:not(:hover),
+html[data-wa-privacy-enabled="true"][data-wa-privacy-name="true"]
+  [data-testid="conversation-panel-messages"] [data-testid="msg-container"]
+  :is([data-testid="author"], [data-testid="message-author"], [data-testid="group-message-author"]):not(:hover),
+html[data-wa-privacy-enabled="true"][data-wa-privacy-name="true"]
+  :is([data-testid="chat-list"] [role="row"], [data-testid="archived-chatlist"] [role="listitem"])
+  [data-testid="last-msg-status"] > div:first-child > div > span[dir="auto"]:not(:hover) {
+  filter: blur(var(--wa-privacy-blur)) !important;
+}
+
+/* The first chat-row column contains all avatar variants in the captured layouts. */
+html[data-wa-privacy-enabled="true"][data-wa-privacy-avatar="true"]
+  :is([data-testid="chat-list"] [role="row"], [data-testid="archived-chatlist"] [role="listitem"])
+  [data-testid="cell-frame-container"] > div:has(+ div [data-testid="cell-frame-title"]):not(:hover),
+html[data-wa-privacy-enabled="true"][data-wa-privacy-avatar="true"]
+  [data-testid="conversation-header"] img[draggable="false"][alt=""]:not(:hover) {
+  filter: blur(var(--wa-privacy-blur)) !important;
+}
+
+html[data-wa-privacy-enabled="true"][data-wa-privacy-time="true"]
+  :is([data-testid="chat-list"] [role="row"], [data-testid="archived-chatlist"] [role="listitem"])
+  [data-testid="cell-frame-primary-detail"] > span:not(:hover) {
+  filter: blur(var(--wa-privacy-blur)) !important;
+}
+
+html[data-wa-privacy-enabled="true"][data-wa-privacy-message-preview="true"]
+  :is([data-testid="chat-list"] [role="row"], [data-testid="archived-chatlist"] [role="listitem"])
+  [data-testid="last-msg-status"] > :not(div:has(> div > span[dir="auto"])):not(:hover) {
+  filter: blur(var(--wa-privacy-blur)) !important;
+}
+
+html[data-wa-privacy-enabled="true"][data-wa-privacy-unread-count="true"]
+  :is([data-testid="chat-list"], [data-testid="archived-chatlist"])
+  [data-testid="icon-unread-count"]:not(:hover) {
+  filter: blur(var(--wa-privacy-blur)) !important;
+}
+
+/* Message metadata is intentionally absent so standalone times and checks stay visible. */
+html[data-wa-privacy-enabled="true"][data-wa-privacy-messages-calls="true"]
+  [data-testid="conversation-panel-messages"] [data-testid="msg-container"]
+  :is(span, a, strong)[data-testid="selectable-text"]:not(:hover),
+html[data-wa-privacy-enabled="true"][data-wa-privacy-messages-calls="true"]
+  [data-testid="conversation-panel-messages"] [data-testid="msg-container"]
+  :is(
+    [data-testid="quoted-message-text"],
+    [data-testid="link-preview-title"],
+    [data-testid="link-description"],
+    [data-testid="url-element"]
+  ):not(:hover),
+html[data-wa-privacy-enabled="true"][data-wa-privacy-messages-calls="true"]
+  [data-testid="conversation-panel-messages"] [data-testid="call-log-system-message"]:not(:hover) {
+  filter: blur(var(--wa-privacy-blur)) !important;
+}
+
+/* This positive message-pane scope keeps the fullscreen drawer explicitly outside the rule. */
+html[data-wa-privacy-enabled="true"][data-wa-privacy-media-attachments="true"]
+  [data-testid="conversation-panel-messages"] [data-testid="msg-container"]
+  :is(
+    [data-testid="link-preview-thumbnail-jpeg"],
+    [data-testid="image-thumb"],
+    [data-testid="video-thumb"],
+    [data-testid="sticker"],
+    [data-testid="sticker-image"],
+    [data-testid="media-url-provider"],
+    [data-testid="audio-player"],
+    [data-testid="audio-message"],
+    [data-testid="ptt"],
+    [data-testid="ptt-message"],
+    [data-testid="document-thumb"],
+    [data-testid="document-message"],
+    [data-testid="document-container"],
+    [data-testid="location-thumb"],
+    [data-testid="location-message"],
+    audio,
+    video,
+    canvas,
+    img:not(.emoji):not([data-testid="selectable-text"]):not([aria-hidden="true"])
+  ):not(:hover) {
+  filter: blur(var(--wa-privacy-blur)) !important;
+}
+
+/* Blur only non-empty composer paragraphs, never its placeholder or action icons. */
+html[data-wa-privacy-enabled="true"][data-wa-privacy-text-input="true"]
+  [data-testid="compose-box"]
+  [data-testid="conversation-compose-box-input"][role="textbox"][contenteditable="true"]
+  > :is(p, div):not(:empty):not(:has(> br:only-child)):not(:hover) {
+  filter: blur(var(--wa-privacy-blur)) !important;
+}

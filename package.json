@@ -4,6 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "npm run build && node --test"
   },
   "devDependencies": {
     "@types/chrome": "^0.2.9",

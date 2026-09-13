@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Privacy</title>
+    <link rel="stylesheet" href="popup.css">
+  </head>
+  <body>
+    <main id="checking-view" class="view checking" role="status" aria-live="polite">
+      <div class="checking-rule" aria-hidden="true"></div>
+      <p class="eyebrow">LOCAL VISUAL PRIVACY</p>
+      <h1>Checking this tab</h1>
+      <p>Loading your settings and confirming protection.</p>
+    </main>
+
+    <main id="normal-view" class="view" hidden>
+      <header class="masthead">
+        <div class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" role="img">
+            <path d="M16 3 26 7.7v8.7C26 22.2 21.9 27 16 29c-5.9-2-10-6.8-10-12.6V7.7L16 3Z"/>
+            <circle cx="16" cy="14" r="2.8"/>
+            <path d="M14.7 16h2.6v6h-2.6z"/>
+          </svg>
+        </div>
+        <div>
+          <p class="eyebrow">LOCAL VISUAL PRIVACY</p>
+          <h1>WhatsApp Privacy</h1>
+        </div>
+      </header>
+
+      <section class="master-panel" aria-labelledby="master-title">
+        <div class="master-copy">
+          <div class="master-heading">
+            <h2 id="master-title">Master Privacy</h2>
+            <strong id="master-status" aria-live="polite">ON</strong>
+          </div>
+          <p id="master-detail">Checking the current tab...</p>
+        </div>
+        <label class="switch switch-light">
+          <span class="sr-only">Master Privacy</span>
+          <input type="checkbox" data-setting="enabled" checked>
+          <span class="switch-track" aria-hidden="true"></span>
+        </label>
+      </section>
+
+      <section class="settings-section" aria-labelledby="chat-list-heading">
+        <div class="section-heading">
+          <h2 id="chat-list-heading">Chat list</h2>
+          <span>5 controls</span>
+        </div>
+        <div class="setting-list">
+          <label class="setting-row">
+            <span>Name</span>
+            <span class="switch">
+              <input type="checkbox" data-setting="chatList.name" checked>
+              <span class="switch-track" aria-hidden="true"></span>
+            </span>
+          </label>
+          <label class="setting-row">
+            <span>Avatar</span>
+            <span class="switch">
+              <input type="checkbox" data-setting="chatList.avatar" checked>
+              <span class="switch-track" aria-hidden="true"></span>
+            </span>
+          </label>
+          <label class="setting-row">
+            <span>Time</span>
+            <span class="switch">
+              <input type="checkbox" data-setting="chatList.time" checked>
+              <span class="switch-track" aria-hidden="true"></span>
+            </span>
+          </label>
+          <label class="setting-row">
+            <span>Message Preview</span>
+            <span class="switch">
+              <input type="checkbox" data-setting="chatList.messagePreview" checked>
+              <span class="switch-track" aria-hidden="true"></span>
+            </span>
+          </label>
+          <label class="setting-row">
+            <span>Unread Count</span>
+            <span class="switch">
+              <input type="checkbox" data-setting="chatList.unreadCount" checked>
+              <span class="switch-track" aria-hidden="true"></span>
+            </span>
+          </label>
+        </div>
+      </section>
+
+      <section class="settings-section" aria-labelledby="conversation-heading">
+        <div class="section-heading">
+          <h2 id="conversation-heading">Conversation</h2>
+          <span>3 controls</span>
+        </div>
+        <div class="setting-list">
+          <label class="setting-row">
+            <span>Messages &amp; Calls</span>
+            <span class="switch">
+              <input type="checkbox" data-setting="conversation.messagesAndCalls" checked>
+              <span class="switch-track" aria-hidden="true"></span>
+            </span>
+          </label>
+          <label class="setting-row">
+            <span>Media &amp; Attachments</span>
+            <span class="switch">
+              <input type="checkbox" data-setting="conversation.mediaAndAttachments" checked>
+              <span class="switch-track" aria-hidden="true"></span>
+            </span>
+          </label>
+          <label class="setting-row">
+            <span>Text Input</span>
+            <span class="switch">
+              <input type="checkbox" data-setting="conversation.textInput" checked>
+              <span class="switch-track" aria-hidden="true"></span>
+            </span>
+          </label>
+        </div>
+      </section>
+
+      <footer>
+        <span class="hover-dot" aria-hidden="true"></span>
+        Hover an item to reveal it. Data never leaves your browser.
+      </footer>
+    </main>
+
+    <main id="fallback-view" class="view fallback" role="alert" aria-atomic="true" hidden>
+      <div class="fallback-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32">
+          <path d="M16 3 26 7.7v8.7C26 22.2 21.9 27 16 29c-5.9-2-10-6.8-10-12.6V7.7L16 3Z"/>
+          <path d="M15 9h2v10h-2zm0 12h2v2h-2z"/>
+        </svg>
+      </div>
+      <p class="eyebrow">ACTION REQUIRED</p>
+      <h1 id="fallback-title">Privacy is not active</h1>
+      <p>The extension could not be applied to the currently open WhatsApp Web tab.</p>
+      <button id="reload-button" type="button" aria-live="polite">Reload WhatsApp Web</button>
+      <small>Your saved privacy settings will be preserved.</small>
+    </main>
+
+    <script src="settings.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>
