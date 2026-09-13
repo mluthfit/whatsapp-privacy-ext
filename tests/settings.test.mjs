@@ -16,7 +16,7 @@ test("privacy-first defaults enable every category", async () => {
   assert.equal(settings.enabled, true);
   assert.deepEqual(
     JSON.parse(JSON.stringify(settings.chatList)),
-    { name: true, avatar: true, time: true, messagePreview: true, unreadCount: true },
+    { name: true, avatar: true, timeAndUnreadCount: true, messagePreview: true },
   );
   assert.deepEqual(
     JSON.parse(JSON.stringify(settings.conversation)),
@@ -35,8 +35,7 @@ test("malformed fields are sanitized without losing valid booleans", async () =>
   assert.equal(settings.enabled, false);
   assert.equal(settings.chatList.name, false);
   assert.equal(settings.chatList.avatar, true);
-  assert.equal(settings.chatList.time, true);
-  assert.equal(settings.chatList.unreadCount, true);
+  assert.equal(settings.chatList.timeAndUnreadCount, true);
   assert.equal(settings.conversation.messagesAndCalls, false);
   assert.equal(settings.conversation.mediaAndAttachments, true);
   assert.equal(settings.conversation.textInput, true);
@@ -56,6 +55,20 @@ test("each toggle changes independently and master preserves categories", async 
   assert.equal(masterOn.conversation.textInput, true);
 });
 
+test("legacy time and unread settings migrate into one privacy-safe value", async () => {
+  const api = await loadSettingsApi();
+
+  assert.equal(api.normalizeSettings({
+    chatList: { time: false, unreadCount: false },
+  }).chatList.timeAndUnreadCount, false);
+  assert.equal(api.normalizeSettings({
+    chatList: { time: false, unreadCount: true },
+  }).chatList.timeAndUnreadCount, true);
+  assert.equal(api.normalizeSettings({
+    chatList: { time: true, unreadCount: false },
+  }).chatList.timeAndUnreadCount, true);
+});
+
 test("loading missing settings persists sanitized privacy-first defaults", async () => {
   const writes = [];
   const api = await loadSettingsApi({
@@ -71,7 +84,7 @@ test("loading missing settings persists sanitized privacy-first defaults", async
   assert.equal(settings.enabled, true);
   assert.equal(settings.conversation.mediaAndAttachments, true);
   assert.equal(writes.length, 1);
-  assert.equal(writes[0].privacySettings.chatList.unreadCount, true);
+  assert.equal(writes[0].privacySettings.chatList.timeAndUnreadCount, true);
 });
 
 test("saving settings stores only the canonical boolean shape", async () => {
@@ -96,5 +109,6 @@ test("saving settings stores only the canonical boolean shape", async () => {
   assert.equal(writes[0].privacySettings.enabled, false);
   assert.equal(writes[0].privacySettings.chatList.name, false);
   assert.equal(writes[0].privacySettings.chatList.avatar, true);
+  assert.equal(writes[0].privacySettings.chatList.timeAndUnreadCount, true);
   assert.equal(writes[0].privacySettings.conversation.textInput, false);
 });

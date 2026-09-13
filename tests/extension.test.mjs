@@ -38,15 +38,30 @@ test("privacy stylesheet contains every fixture-backed selector contract", async
   );
   const previewRules = css.slice(
     css.indexOf('html[data-wa-privacy-enabled="true"][data-wa-privacy-message-preview="true"]'),
-    css.indexOf('html[data-wa-privacy-enabled="true"][data-wa-privacy-unread-count="true"]'),
+    css.indexOf("/* Message metadata"),
+  );
+  const activityRules = css.slice(
+    css.indexOf("/* Time and unread count"),
+    css.indexOf('html[data-wa-privacy-enabled="true"][data-wa-privacy-message-preview="true"]'),
   );
 
-  assert.match(css, /--wa-privacy-style-version: 2/);
+  assert.match(css, /--wa-privacy-style-version: 3/);
   assert.match(nameRules, /\[data-testid="cell-frame-label"\]/);
   assert.doesNotMatch(nameRules, /last-msg-status/);
+  assert.match(activityRules, /data-wa-privacy-time-unread-count/);
+  assert.match(activityRules, /cell-frame-primary-detail/);
+  assert.match(activityRules, /icon-unread-count/);
+  assert.match(activityRules, /:not\(:has\(/);
   assert.match(previewRules, /\[data-testid="last-msg-status"\]:not\(:hover\)/);
   assert.doesNotMatch(css, /\[data-testid="last-msg-status"\]\s*>/);
   assert.doesNotMatch(css, /drawer-fullscreen[^*]*filter:/s);
+});
+
+test("popup exposes one combined time and unread count control", async () => {
+  const html = await readFile(new URL("../dist/popup.html", import.meta.url), "utf8");
+  assert.match(html, /data-setting="chatList\.timeAndUnreadCount"/);
+  assert.doesNotMatch(html, /data-setting="chatList\.(?:time|unreadCount)"/);
+  assert.match(html, />4 controls</);
 });
 
 test("production code contains no networking or remote resources", async () => {

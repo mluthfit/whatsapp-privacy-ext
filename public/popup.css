@@ -26,6 +26,16 @@ input {
   display: none;
 }
 
+#normal-view:not([hidden]) {
+  display: flex;
+  min-height: 560px;
+  flex-direction: column;
+}
+
+#normal-view footer {
+  margin-top: auto;
+}
+
 .masthead {
   display: flex;
   align-items: center;

@@ -1,6 +1,6 @@
 :root {
   --wa-privacy-blur: 7px;
-  --wa-privacy-style-version: 2;
+  --wa-privacy-style-version: 3;
 }
 
 /* Chat titles, community labels, active conversation titles, and conversation senders. */
@@ -24,21 +24,22 @@ html[data-wa-privacy-enabled="true"][data-wa-privacy-avatar="true"]
   filter: blur(var(--wa-privacy-blur)) !important;
 }
 
-html[data-wa-privacy-enabled="true"][data-wa-privacy-time="true"]
-  :is([data-testid="chat-list"] [role="row"], [data-testid="archived-chatlist"] [role="listitem"])
-  [data-testid="cell-frame-primary-detail"] > span:not(:hover) {
+/* Time and unread count share one state and reveal together when either is hovered. */
+html[data-wa-privacy-enabled="true"][data-wa-privacy-time-unread-count="true"]
+  :is([data-testid="chat-list"] [role="row"], [data-testid="archived-chatlist"] [role="listitem"]):not(:has(
+    [data-testid="cell-frame-primary-detail"] > span:hover,
+    [data-testid="icon-unread-count"]:hover
+  ))
+  :is(
+    [data-testid="cell-frame-primary-detail"] > span,
+    [data-testid="icon-unread-count"]
+  ) {
   filter: blur(var(--wa-privacy-blur)) !important;
 }
 
 html[data-wa-privacy-enabled="true"][data-wa-privacy-message-preview="true"]
   :is([data-testid="chat-list"] [role="row"], [data-testid="archived-chatlist"] [role="listitem"])
   [data-testid="last-msg-status"]:not(:hover) {
-  filter: blur(var(--wa-privacy-blur)) !important;
-}
-
-html[data-wa-privacy-enabled="true"][data-wa-privacy-unread-count="true"]
-  :is([data-testid="chat-list"], [data-testid="archived-chatlist"])
-  [data-testid="icon-unread-count"]:not(:hover) {
   filter: blur(var(--wa-privacy-blur)) !important;
 }
 

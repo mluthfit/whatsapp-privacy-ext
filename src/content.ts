@@ -11,9 +11,8 @@ interface PrivacyRuntimeGlobal {
     enabled: "data-wa-privacy-enabled",
     name: "data-wa-privacy-name",
     avatar: "data-wa-privacy-avatar",
-    time: "data-wa-privacy-time",
+    timeAndUnreadCount: "data-wa-privacy-time-unread-count",
     messagePreview: "data-wa-privacy-message-preview",
-    unreadCount: "data-wa-privacy-unread-count",
     messagesAndCalls: "data-wa-privacy-messages-calls",
     mediaAndAttachments: "data-wa-privacy-media-attachments",
     textInput: "data-wa-privacy-text-input",
@@ -27,9 +26,10 @@ interface PrivacyRuntimeGlobal {
     setBooleanAttribute(attributeNames.enabled, settings.enabled);
     setBooleanAttribute(attributeNames.name, settings.chatList.name);
     setBooleanAttribute(attributeNames.avatar, settings.chatList.avatar);
-    setBooleanAttribute(attributeNames.time, settings.chatList.time);
+    setBooleanAttribute(attributeNames.timeAndUnreadCount, settings.chatList.timeAndUnreadCount);
     setBooleanAttribute(attributeNames.messagePreview, settings.chatList.messagePreview);
-    setBooleanAttribute(attributeNames.unreadCount, settings.chatList.unreadCount);
+    document.documentElement.removeAttribute("data-wa-privacy-time");
+    document.documentElement.removeAttribute("data-wa-privacy-unread-count");
     setBooleanAttribute(attributeNames.messagesAndCalls, settings.conversation.messagesAndCalls);
     setBooleanAttribute(attributeNames.mediaAndAttachments, settings.conversation.mediaAndAttachments);
     setBooleanAttribute(attributeNames.textInput, settings.conversation.textInput);

@@ -4,16 +4,18 @@ import test from "node:test";
 import vm from "node:vm";
 
 test("content runtime starts private, loads storage, syncs changes, and reports health", async () => {
-  const attributes = new Map();
+  const attributes = new Map([
+    ["data-wa-privacy-time", "true"],
+    ["data-wa-privacy-unread-count", "true"],
+  ]);
   const listeners = {};
   const storedSettings = {
     enabled: false,
     chatList: {
       name: true,
       avatar: false,
-      time: true,
+      timeAndUnreadCount: true,
       messagePreview: true,
-      unreadCount: true,
     },
     conversation: {
       messagesAndCalls: true,
@@ -39,12 +41,13 @@ test("content runtime starts private, loads storage, syncs changes, and reports 
   };
   const documentElement = {
     setAttribute: (name, value) => attributes.set(name, value),
+    removeAttribute: (name) => attributes.delete(name),
   };
   const context = vm.createContext({
     chrome,
     document: { documentElement },
     getComputedStyle: () => ({
-      getPropertyValue: (name) => name === "--wa-privacy-style-version" ? "2" : "",
+      getPropertyValue: (name) => name === "--wa-privacy-style-version" ? "3" : "",
     }),
   });
   const settingsSource = await readFile(new URL("../dist/settings.js", import.meta.url), "utf8");
@@ -57,7 +60,10 @@ test("content runtime starts private, loads storage, syncs changes, and reports 
   await new Promise((resolve) => setImmediate(resolve));
   assert.equal(attributes.get("data-wa-privacy-enabled"), "false");
   assert.equal(attributes.get("data-wa-privacy-avatar"), "false");
+  assert.equal(attributes.get("data-wa-privacy-time-unread-count"), "true");
   assert.equal(attributes.get("data-wa-privacy-text-input"), "false");
+  assert.equal(attributes.has("data-wa-privacy-time"), false);
+  assert.equal(attributes.has("data-wa-privacy-unread-count"), false);
 
   listeners.storage({
     privacySettings: {
@@ -76,6 +82,6 @@ test("content runtime starts private, loads storage, syncs changes, and reports 
   assert.deepEqual(JSON.parse(JSON.stringify(response)), {
     ok: true,
     version: 1,
-    styleVersion: "2",
+    styleVersion: "3",
   });
 });

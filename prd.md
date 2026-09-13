@@ -55,9 +55,8 @@ The first-run experience is privacy-first. Master Privacy and every category tog
 | Global | Master Privacy | On |
 | Chat List | Name | On |
 | Chat List | Avatar | On |
-| Chat List | Time | On |
+| Chat List | Time & Unread Count | On |
 | Chat List | Message Preview | On |
-| Chat List | Unread Count | On |
 | Conversation | Messages & Calls | On |
 | Conversation | Media & Attachments | On |
 | Conversation | Text Input | On |
@@ -70,9 +69,8 @@ The first-run experience is privacy-first. Master Privacy and every category tog
 | --- | --- | --- |
 | Name | Individual names, group names, group participant names, and equivalent identity labels | Main chat list, search results, archived chats, contact picker, active conversation header, and group message sender labels |
 | Avatar | Profile photos, group photos, and generated initial avatars | Main chat list, search results, archived chats, contact picker, and active conversation header |
-| Time | The last-activity time or date shown for a chat-list item | Main chat list, search results, archived chats, and contact picker wherever the field exists |
+| Time & Unread Count | The last-activity time or date and numeric unread-message badge shown for a chat-list item | Main chat list, search results, archived chats, and contact picker wherever either field exists |
 | Message Preview | Last-message text, typing indicators, draft labels and content, attachment summaries, and call summaries | Main chat list, search results, and archived chats wherever a preview exists |
-| Unread Count | Numeric unread-message badges | Main chat list, search results, and archived chats wherever a badge exists |
 
 Conversation header names and avatars inherit the `Name` and `Avatar` settings from Chat List. They must not introduce duplicate conversation settings.
 
@@ -102,7 +100,7 @@ Call summaries rendered as chat-list previews follow `Message Preview`. Call car
 
 #### Normal Configuration View
 
-The normal popup contains one Master Privacy toggle and the eight category toggles defined in this document. Reveal on hover is mandatory behavior and must not have a setting.
+The normal popup contains one Master Privacy toggle and the seven category toggles defined in this document. Reveal on hover is mandatory behavior and must not have a setting.
 
 ```text
 Master Privacy                         ON
@@ -110,9 +108,8 @@ Master Privacy                         ON
 CHAT LIST
 Name                                   ON
 Avatar                                 ON
-Time                                   ON
+Time & Unread Count                    ON
 Message Preview                        ON
-Unread Count                           ON
 
 CONVERSATION
 Messages & Calls                       ON
@@ -153,11 +150,12 @@ As a privacy-conscious user, I want my saved blur settings applied whenever I op
 
 As a user, I want to blur each type of chat-list information independently so that I can choose the level of visual privacy I need.
 
-- AC-2.1: `Name`, `Avatar`, `Time`, `Message Preview`, and `Unread Count` each have an independent toggle.
-- AC-2.2: Changing one category does not alter the stored values of the other categories.
-- AC-2.3: Each setting applies consistently to the main chat list, search results, archived chats, and contact picker wherever the corresponding field exists.
-- AC-2.4: Name and avatar settings also apply to the active conversation header.
-- AC-2.5: Name settings also apply to sender labels in group conversations.
+- AC-2.1: `Name`, `Avatar`, `Time & Unread Count`, and `Message Preview` each have an independent toggle.
+- AC-2.2: Hovering either the time/date or unread badge reveals both fields for that chat row while neighboring rows remain protected.
+- AC-2.3: Changing one category does not alter the stored values of the other categories.
+- AC-2.4: Each setting applies consistently to the main chat list, search results, archived chats, and contact picker wherever the corresponding field exists.
+- AC-2.5: Name and avatar settings also apply to the active conversation header.
+- AC-2.6: Name settings also apply to sender labels in group conversations.
 
 #### US-3: Independent Conversation Controls
 
@@ -294,9 +292,8 @@ interface PrivacySettings {
   chatList: {
     name: boolean;
     avatar: boolean;
-    time: boolean;
+    timeAndUnreadCount: boolean;
     messagePreview: boolean;
-    unreadCount: boolean;
   };
   conversation: {
     messagesAndCalls: boolean;
@@ -396,7 +393,7 @@ The MVP release requires automated tests where practical and a manual regression
 | --- | --- |
 | Settings | Defaults, every independent toggle, Master Privacy preservation, persistence, and malformed/missing stored values |
 | Startup | Fresh navigation, cached navigation, slow loading, reload, browser restart, logout/login, and multiple tabs |
-| Chat List | Main list, search results, archived chats, contact picker, virtualized rows, and all five fields |
+| Chat List | Main list, search results, archived chats, contact picker, virtualized rows, and all four controls |
 | Conversation | Direct chat, group chat sender labels, message text, quotes, captions, links, call cards, media types, audio, documents, and composer input |
 | Hover | Individual reveal, nested targets, re-blur, focused composer, audio playback, and interactive media/document controls |
 | Fullscreen | Blurred thumbnail before opening and unblurred media inside the fullscreen viewer |
@@ -414,7 +411,7 @@ An MVP build passes only when every in-scope category and surface passes the app
 #### MVP
 
 - Chrome desktop Manifest V3 extension.
-- Privacy-first defaults with Master Privacy and all eight category toggles enabled.
+- Privacy-first defaults with Master Privacy and all seven category toggles enabled.
 - Automatic document-start behavior with no routine popup or reload requirement.
 - Chat List coverage for the main list, search results, archived chats, and contact picker.
 - Conversation coverage for Messages & Calls, Media & Attachments, and Text Input.
