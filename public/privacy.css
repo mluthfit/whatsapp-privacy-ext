@@ -1,20 +1,17 @@
 :root {
   --wa-privacy-blur: 7px;
-  --wa-privacy-style-version: 1;
+  --wa-privacy-style-version: 2;
 }
 
-/* Chat and search names, plus the active conversation title and group senders. */
+/* Chat titles, community labels, active conversation titles, and conversation senders. */
 html[data-wa-privacy-enabled="true"][data-wa-privacy-name="true"]
   :is([data-testid="chat-list"] [role="row"], [data-testid="archived-chatlist"] [role="listitem"])
-  [data-testid="cell-frame-title"]:not(:hover),
+  :is([data-testid="cell-frame-title"], [data-testid="cell-frame-label"]):not(:hover),
 html[data-wa-privacy-enabled="true"][data-wa-privacy-name="true"]
   [data-testid="conversation-header"] [data-testid="conversation-info-header-chat-title"]:not(:hover),
 html[data-wa-privacy-enabled="true"][data-wa-privacy-name="true"]
   [data-testid="conversation-panel-messages"] [data-testid="msg-container"]
-  :is([data-testid="author"], [data-testid="message-author"], [data-testid="group-message-author"]):not(:hover),
-html[data-wa-privacy-enabled="true"][data-wa-privacy-name="true"]
-  :is([data-testid="chat-list"] [role="row"], [data-testid="archived-chatlist"] [role="listitem"])
-  [data-testid="last-msg-status"] > div:first-child > div > span[dir="auto"]:not(:hover) {
+  :is([data-testid="author"], [data-testid="message-author"], [data-testid="group-message-author"]):not(:hover) {
   filter: blur(var(--wa-privacy-blur)) !important;
 }
 
@@ -35,7 +32,7 @@ html[data-wa-privacy-enabled="true"][data-wa-privacy-time="true"]
 
 html[data-wa-privacy-enabled="true"][data-wa-privacy-message-preview="true"]
   :is([data-testid="chat-list"] [role="row"], [data-testid="archived-chatlist"] [role="listitem"])
-  [data-testid="last-msg-status"] > :not(div:has(> div > span[dir="auto"])):not(:hover) {
+  [data-testid="last-msg-status"]:not(:hover) {
   filter: blur(var(--wa-privacy-blur)) !important;
 }
 

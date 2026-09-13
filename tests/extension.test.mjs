@@ -16,6 +16,7 @@ test("privacy stylesheet contains every fixture-backed selector contract", async
     "chat-list",
     "archived-chatlist",
     "cell-frame-title",
+    "cell-frame-label",
     "cell-frame-primary-detail",
     "last-msg-status",
     "icon-unread-count",
@@ -31,9 +32,20 @@ test("privacy stylesheet contains every fixture-backed selector contract", async
   for (const selector of requiredSelectors) {
     assert.match(css, new RegExp(`data-testid=\\"${selector}\\"`));
   }
-  assert.match(css, /--wa-privacy-style-version: 1/);
-  assert.match(css, /> div:first-child > div > span\[dir="auto"\]/);
-  assert.match(css, /> :not\(div:has\(> div > span\[dir="auto"\]\)\)/);
+  const nameRules = css.slice(
+    css.indexOf("/* Chat titles"),
+    css.indexOf("/* The first chat-row column"),
+  );
+  const previewRules = css.slice(
+    css.indexOf('html[data-wa-privacy-enabled="true"][data-wa-privacy-message-preview="true"]'),
+    css.indexOf('html[data-wa-privacy-enabled="true"][data-wa-privacy-unread-count="true"]'),
+  );
+
+  assert.match(css, /--wa-privacy-style-version: 2/);
+  assert.match(nameRules, /\[data-testid="cell-frame-label"\]/);
+  assert.doesNotMatch(nameRules, /last-msg-status/);
+  assert.match(previewRules, /\[data-testid="last-msg-status"\]:not\(:hover\)/);
+  assert.doesNotMatch(css, /\[data-testid="last-msg-status"\]\s*>/);
   assert.doesNotMatch(css, /drawer-fullscreen[^*]*filter:/s);
 });
 
