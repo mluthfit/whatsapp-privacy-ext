@@ -18,6 +18,17 @@ A local-only Chrome extension that visually blurs sensitive content on WhatsApp 
 - **Time & Unread Count** protects both fields with one setting. Hovering either field reveals both for that row.
 - **Message Preview** protects the complete preview line, including sender prefixes, attachment or call icons, and preview text.
 
+Community rows reveal the community and subgroup names together when either name is hovered. Other fields in the row remain independently protected.
+
+### Status list
+
+- Status contact names follow **Name**.
+- Status thumbnails and the My Status profile image follow **Avatar**.
+- Status timestamps follow **Time & Unread Count**.
+- New-status rings remain visible as navigation indicators.
+
+Status viewer content is not included in this release.
+
 ### Conversation
 
 - **Messages & Calls** protects message text, emoji, expanded `Read more` content, contextual search text such as `Get more info about this message. Search on web`, link text, quotes, captions, and call cards.

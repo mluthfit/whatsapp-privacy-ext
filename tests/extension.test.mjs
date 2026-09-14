@@ -27,14 +27,22 @@ test("privacy stylesheet contains every fixture-backed selector contract", async
     "link-preview-thumbnail-jpeg",
     "compose-box",
     "conversation-compose-box-input",
+    "status-list-drawer",
+    "status-row-cell",
+    "status-header",
+    "status-thumbnail",
   ];
 
   for (const selector of requiredSelectors) {
     assert.match(css, new RegExp(`data-testid=\\"${selector}\\"`));
   }
   const nameRules = css.slice(
-    css.indexOf("/* Chat titles"),
+    css.indexOf("/* Ordinary chat names"),
     css.indexOf("/* The first chat-row column"),
+  );
+  const avatarRules = css.slice(
+    css.indexOf("/* The first chat-row column"),
+    css.indexOf("/* Time and unread count"),
   );
   const previewRules = css.slice(
     css.indexOf('html[data-wa-privacy-enabled="true"][data-wa-privacy-message-preview="true"]'),
@@ -49,12 +57,19 @@ test("privacy stylesheet contains every fixture-backed selector contract", async
     css.indexOf("/* This positive message-pane scope"),
   );
 
-  assert.match(css, /--wa-privacy-style-version: 5/);
+  assert.match(css, /--wa-privacy-style-version: 6/);
   assert.match(nameRules, /\[data-testid="cell-frame-label"\]/);
   assert.doesNotMatch(nameRules, /last-msg-status/);
+  assert.match(nameRules, /:has\(\s*\[data-testid="cell-frame-label"\]\s*\):not\(:has\(/);
+  assert.match(nameRules, /\[data-testid="cell-frame-label"\] > span\[title\]:hover/);
+  assert.match(nameRules, /\[data-testid="status-list-drawer"\]/);
+  assert.match(avatarRules, /button\[data-testid="status-header"\]/);
+  assert.match(avatarRules, /\[data-testid="status-thumbnail"\] > div:last-child/);
   assert.match(activityRules, /data-wa-privacy-time-unread-count/);
   assert.match(activityRules, /cell-frame-primary-detail/);
   assert.match(activityRules, /icon-unread-count/);
+  assert.match(activityRules, /status-list-drawer/);
+  assert.match(activityRules, /cell-frame-secondary/);
   assert.match(activityRules, /:not\(:has\(/);
   assert.match(previewRules, /\[data-testid="last-msg-status"\]:not\(:hover\)/);
   assert.match(messageRules, /\[data-testid~="selectable-text"\]/);

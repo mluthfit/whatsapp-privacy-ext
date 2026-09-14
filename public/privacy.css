@@ -1,12 +1,29 @@
 :root {
   --wa-privacy-blur: 7px;
-  --wa-privacy-style-version: 5;
+  --wa-privacy-style-version: 6;
 }
 
-/* Chat titles, community labels, active conversation titles, and conversation senders. */
+/* Ordinary chat names reveal independently. */
 html[data-wa-privacy-enabled="true"][data-wa-privacy-name="true"]
-  :is([data-testid="chat-list"] [role="row"], [data-testid="archived-chatlist"] [role="listitem"])
-  :is([data-testid="cell-frame-title"], [data-testid="cell-frame-label"]):not(:hover),
+  :is([data-testid="chat-list"] [role="row"], [data-testid="archived-chatlist"] [role="listitem"]):not(:has(
+    [data-testid="cell-frame-label"]
+  ))
+  [data-testid="cell-frame-title"] span[title]:not(:hover),
+/* A community row coordinates hover across its community and subgroup names. */
+html[data-wa-privacy-enabled="true"][data-wa-privacy-name="true"]
+  :is([data-testid="chat-list"] [role="row"], [data-testid="archived-chatlist"] [role="listitem"]):has(
+    [data-testid="cell-frame-label"]
+  ):not(:has(
+    [data-testid="cell-frame-title"] span[title]:hover,
+    [data-testid="cell-frame-label"] > span[title]:hover
+  ))
+  :is(
+    [data-testid="cell-frame-title"] span[title],
+    [data-testid="cell-frame-label"] > span[title]
+  ),
+html[data-wa-privacy-enabled="true"][data-wa-privacy-name="true"]
+  [data-testid="status-list-drawer"] [data-testid="status-row-cell"]
+  [data-testid="cell-frame-title"] span[title]:not(:hover),
 html[data-wa-privacy-enabled="true"][data-wa-privacy-name="true"]
   [data-testid="conversation-header"] [data-testid="conversation-info-header-chat-title"]:not(:hover),
 html[data-wa-privacy-enabled="true"][data-wa-privacy-name="true"]
@@ -24,6 +41,14 @@ html[data-wa-privacy-enabled="true"][data-wa-privacy-avatar="true"]
   filter: blur(var(--wa-privacy-blur)) !important;
 }
 
+html[data-wa-privacy-enabled="true"][data-wa-privacy-avatar="true"]
+  button[data-testid="status-header"] img[draggable="false"][alt=""]:not(:hover),
+html[data-wa-privacy-enabled="true"][data-wa-privacy-avatar="true"]
+  [data-testid="status-list-drawer"] [data-testid="status-row-cell"]
+  [data-testid="status-thumbnail"] > div:last-child:not(:hover) {
+  filter: blur(var(--wa-privacy-blur)) !important;
+}
+
 /* Time and unread count share one state and reveal together when either is hovered. */
 html[data-wa-privacy-enabled="true"][data-wa-privacy-time-unread-count="true"]
   :is([data-testid="chat-list"] [role="row"], [data-testid="archived-chatlist"] [role="listitem"]):not(:has(
@@ -34,6 +59,12 @@ html[data-wa-privacy-enabled="true"][data-wa-privacy-time-unread-count="true"]
     [data-testid="cell-frame-primary-detail"] > span,
     [data-testid="icon-unread-count"]
   ) {
+  filter: blur(var(--wa-privacy-blur)) !important;
+}
+
+html[data-wa-privacy-enabled="true"][data-wa-privacy-time-unread-count="true"]
+  [data-testid="status-list-drawer"] [data-testid="status-row-cell"]
+  [data-testid="cell-frame-secondary"]:not(:hover) {
   filter: blur(var(--wa-privacy-blur)) !important;
 }
 
