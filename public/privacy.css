@@ -1,6 +1,6 @@
 :root {
   --wa-privacy-blur: 7px;
-  --wa-privacy-style-version: 6;
+  --wa-privacy-style-version: 7;
 }
 
 /* Ordinary chat names reveal independently. */
@@ -21,6 +21,19 @@ html[data-wa-privacy-enabled="true"][data-wa-privacy-name="true"]
     [data-testid="cell-frame-title"] span[title],
     [data-testid="cell-frame-label"] > span[title]
   ),
+html[data-wa-privacy-enabled="true"][data-wa-privacy-name="true"]
+  [data-testid="community-tab-drawer"]
+  :is(
+    [data-testid="community-tab-community-cell"][role="button"],
+    [data-testid="community-tab-subgroup-cell"][role="button"]
+  )
+  [data-testid="cell-frame-title"] > span[dir="auto"]:not(:hover),
+html[data-wa-privacy-enabled="true"][data-wa-privacy-name="true"]
+  [data-testid="community-navigation-drawer"] [data-testid="drawer-title-body"]
+  h2 span[dir="auto"]:not(:hover),
+html[data-wa-privacy-enabled="true"][data-wa-privacy-name="true"]
+  [data-testid="community-navigation-drawer"] [data-testid="cell-frame-container"]
+  [data-testid="cell-frame-title"] > span[dir="auto"]:not(:hover),
 html[data-wa-privacy-enabled="true"][data-wa-privacy-name="true"]
   [data-testid="status-list-drawer"] [data-testid="status-row-cell"]
   [data-testid="cell-frame-title"] span[title]:not(:hover),
@@ -49,6 +62,24 @@ html[data-wa-privacy-enabled="true"][data-wa-privacy-avatar="true"]
   filter: blur(var(--wa-privacy-blur)) !important;
 }
 
+/* Communities use avatar owners so image and generated variants behave identically. */
+html[data-wa-privacy-enabled="true"][data-wa-privacy-avatar="true"]
+  [data-testid="community-tab-drawer"]
+  :is(
+    [data-testid="community-tab-community-cell"][role="button"],
+    [data-testid="community-tab-subgroup-cell"][role="button"]
+  )
+  [data-testid="cell-frame-container"]
+  > div:has(+ div > [role="gridcell"][aria-colindex="2"]):not(:hover),
+html[data-wa-privacy-enabled="true"][data-wa-privacy-avatar="true"]
+  [data-testid="community-navigation-drawer"]
+  [data-testid="cell-frame-container"]:has(
+    [data-testid="cell-frame-title"] > span[dir="auto"]
+  )
+  > div:has(+ div > [role="gridcell"][aria-colindex="2"]):not(:hover) {
+  filter: blur(var(--wa-privacy-blur)) !important;
+}
+
 /* Time and unread count share one state and reveal together when either is hovered. */
 html[data-wa-privacy-enabled="true"][data-wa-privacy-time-unread-count="true"]
   :is([data-testid="chat-list"] [role="row"], [data-testid="archived-chatlist"] [role="listitem"]):not(:has(
@@ -68,9 +99,47 @@ html[data-wa-privacy-enabled="true"][data-wa-privacy-time-unread-count="true"]
   filter: blur(var(--wa-privacy-blur)) !important;
 }
 
+html[data-wa-privacy-enabled="true"][data-wa-privacy-time-unread-count="true"]
+  [data-testid="community-tab-drawer"]
+  [data-testid="community-tab-subgroup-cell"][role="button"]:not(:has(
+    [data-testid="cell-frame-primary-detail"] > span:hover,
+    [data-testid="icon-unread-count"]:hover
+  ))
+  :is(
+    [data-testid="cell-frame-primary-detail"] > span,
+    [data-testid="icon-unread-count"]
+  ),
+html[data-wa-privacy-enabled="true"][data-wa-privacy-time-unread-count="true"]
+  [data-testid="community-navigation-drawer"]
+  [data-testid="cell-frame-container"]:has(
+    [data-testid="cell-frame-title"] > span[dir="auto"]
+  ):not(:has(
+    [data-testid="cell-frame-primary-detail"] > span:hover,
+    [data-testid="icon-unread-count"]:hover
+  ))
+  :is(
+    [data-testid="cell-frame-primary-detail"] > span,
+    [data-testid="icon-unread-count"]
+  ) {
+  filter: blur(var(--wa-privacy-blur)) !important;
+}
+
 html[data-wa-privacy-enabled="true"][data-wa-privacy-message-preview="true"]
   :is([data-testid="chat-list"] [role="row"], [data-testid="archived-chatlist"] [role="listitem"])
   [data-testid="last-msg-status"]:not(:hover) {
+  filter: blur(var(--wa-privacy-blur)) !important;
+}
+
+html[data-wa-privacy-enabled="true"][data-wa-privacy-message-preview="true"]
+  [data-testid="community-tab-drawer"]
+  [data-testid="community-tab-subgroup-cell"][role="button"]
+  [data-testid="last-msg-status"]:not(:hover),
+html[data-wa-privacy-enabled="true"][data-wa-privacy-message-preview="true"]
+  [data-testid="community-navigation-drawer"]
+  [data-testid="last-msg-status"]:not(:hover),
+html[data-wa-privacy-enabled="true"][data-wa-privacy-message-preview="true"]
+  [data-testid="community-navigation-drawer"] [data-testid="section-other-groups"]
+  [role="listitem"] [data-testid="cell-frame-secondary"] > div:not(:hover) {
   filter: blur(var(--wa-privacy-blur)) !important;
 }
 

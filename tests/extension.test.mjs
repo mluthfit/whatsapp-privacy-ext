@@ -31,6 +31,10 @@ test("privacy stylesheet contains every fixture-backed selector contract", async
     "status-row-cell",
     "status-header",
     "status-thumbnail",
+    "community-tab-drawer",
+    "community-tab-community-cell",
+    "community-tab-subgroup-cell",
+    "community-navigation-drawer",
   ];
 
   for (const selector of requiredSelectors) {
@@ -57,19 +61,26 @@ test("privacy stylesheet contains every fixture-backed selector contract", async
     css.indexOf("/* This positive message-pane scope"),
   );
 
-  assert.match(css, /--wa-privacy-style-version: 6/);
+  assert.match(css, /--wa-privacy-style-version: 7/);
   assert.match(nameRules, /\[data-testid="cell-frame-label"\]/);
   assert.doesNotMatch(nameRules, /last-msg-status/);
   assert.match(nameRules, /:has\(\s*\[data-testid="cell-frame-label"\]\s*\):not\(:has\(/);
   assert.match(nameRules, /\[data-testid="cell-frame-label"\] > span\[title\]:hover/);
   assert.match(nameRules, /\[data-testid="status-list-drawer"\]/);
+  assert.match(nameRules, /\[data-testid="community-tab-drawer"\]/);
+  assert.match(nameRules, /\[data-testid="community-navigation-drawer"\]/);
   assert.match(avatarRules, /button\[data-testid="status-header"\]/);
   assert.match(avatarRules, /\[data-testid="status-thumbnail"\] > div:last-child/);
+  assert.match(avatarRules, /community-tab-community-cell/);
+  assert.match(avatarRules, /community-tab-subgroup-cell/);
+  assert.match(avatarRules, /community-navigation-drawer/);
   assert.match(activityRules, /data-wa-privacy-time-unread-count/);
   assert.match(activityRules, /cell-frame-primary-detail/);
   assert.match(activityRules, /icon-unread-count/);
   assert.match(activityRules, /status-list-drawer/);
   assert.match(activityRules, /cell-frame-secondary/);
+  assert.match(activityRules, /community-tab-subgroup-cell/);
+  assert.match(activityRules, /community-navigation-drawer/);
   assert.match(activityRules, /:not\(:has\(/);
   assert.match(previewRules, /\[data-testid="last-msg-status"\]:not\(:hover\)/);
   assert.match(messageRules, /\[data-testid~="selectable-text"\]/);
@@ -85,6 +96,8 @@ test("privacy stylesheet contains every fixture-backed selector contract", async
   );
   assert.doesNotMatch(css, /\[data-testid="last-msg-status"\]\s*>/);
   assert.doesNotMatch(css, /drawer-fullscreen[^*]*filter:/s);
+  assert.doesNotMatch(css, /community-tab-view-all-cell[^,{]*\{[^}]*filter:/s);
+  assert.doesNotMatch(css, /new-community-row[^,{]*\{[^}]*filter:/s);
 });
 
 test("popup exposes one combined time and unread count control", async () => {

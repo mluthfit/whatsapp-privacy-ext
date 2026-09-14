@@ -20,6 +20,15 @@ A local-only Chrome extension that visually blurs sensitive content on WhatsApp 
 
 Community rows reveal the community and subgroup names together when either name is hovered. Other fields in the row remain independently protected.
 
+### Communities
+
+- Community and subgroup names follow **Name**.
+- Community and subgroup identity images follow **Avatar**.
+- Subgroup timestamps and unread badges follow **Time & Unread Count**.
+- Subgroup previews and joinable-group descriptions follow **Message Preview**.
+- Community card headers, subgroup rows, and the View All header reveal independently.
+- New community, View All, Add group, Back, menu, and section-heading controls remain visible.
+
 ### Status list
 
 - Status contact names follow **Name**.
