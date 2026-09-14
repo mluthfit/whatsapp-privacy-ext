@@ -100,8 +100,10 @@ test("privacy stylesheet contains every fixture-backed selector contract", async
   assert.doesNotMatch(css, /new-community-row[^,{]*\{[^}]*filter:/s);
 });
 
-test("popup exposes one combined time and unread count control", async () => {
+test("popup exposes Lists & Identity with one combined time and unread count control", async () => {
   const html = await readFile(new URL("../dist/popup.html", import.meta.url), "utf8");
+  assert.match(html, /<h2 id="lists-identity-heading">Lists &amp; Identity<\/h2>/);
+  assert.doesNotMatch(html, /<h2[^>]*>Chat list<\/h2>/i);
   assert.match(html, /data-setting="chatList\.timeAndUnreadCount"/);
   assert.doesNotMatch(html, /data-setting="chatList\.(?:time|unreadCount)"/);
   assert.match(html, />4 controls</);
