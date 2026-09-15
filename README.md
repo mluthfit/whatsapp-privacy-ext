@@ -4,7 +4,8 @@ A local-only Chrome extension that visually blurs sensitive content on WhatsApp 
 
 ## Features
 
-- Privacy-first defaults with Master Privacy and every category enabled.
+- Privacy-first defaults with Master Privacy, both section gates, and every category enabled.
+- Independent List Views and Conversation gates that pause a section without changing its child settings.
 - Automatic protection at `document_start`, including content rendered dynamically by WhatsApp Web.
 - Live setting updates across every open WhatsApp Web tab.
 - Per-element hover reveal that restores blur as soon as the pointer leaves.
@@ -12,6 +13,8 @@ A local-only Chrome extension that visually blurs sensitive content on WhatsApp 
 - Local-only operation with no backend, analytics, telemetry, or remote resources.
 
 ### List Views
+
+The header toggle pauses or restores all List Views blur while retaining the four settings below it.
 
 - **Name** protects contact names, group names, community labels, and Status contact names.
 - **Avatar** protects contact, group, community, and Status identity images.
@@ -39,6 +42,8 @@ Community rows reveal the community and subgroup names together when either name
 Status viewer content is not included in this release.
 
 ### Conversation
+
+The header toggle pauses or restores all Conversation blur while retaining the six settings below it.
 
 - **Name** protects the active conversation header name, its participant subtitle, and group-message sender labels.
 - **Avatar** protects the active conversation header avatar and each sender avatar in group conversations.
@@ -75,7 +80,7 @@ The source is organized as follows:
 
 ## Privacy model
 
-- Only eleven boolean values are stored: Master Privacy, four List Views categories, and six Conversation categories.
+- Only thirteen boolean values are stored: Master Privacy, two section gates, four List Views categories, and six Conversation categories.
 - The extension has no backend, analytics, telemetry, or external network requests.
 - WhatsApp names, messages, attachments, call details, and composer text are never stored or transmitted by the extension.
 - Blur is visual only. The underlying WhatsApp content remains available to WhatsApp, browser developer tools, accessibility tools, and other software with page access.

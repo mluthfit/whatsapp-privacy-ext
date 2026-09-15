@@ -26,21 +26,45 @@ interface PrivacyRuntimeGlobal {
   }
 
   function applySettings(settings: WAPrivacy.PrivacySettings): void {
+    const listEnabled = settings.chatList.enabled;
+    const conversationEnabled = settings.conversation.enabled;
+
     setBooleanAttribute(attributeNames.enabled, settings.enabled);
-    setBooleanAttribute(attributeNames.listName, settings.chatList.name);
-    setBooleanAttribute(attributeNames.conversationName, settings.conversation.name);
-    setBooleanAttribute(attributeNames.listAvatar, settings.chatList.avatar);
-    setBooleanAttribute(attributeNames.conversationAvatar, settings.conversation.avatar);
-    setBooleanAttribute(attributeNames.conversationTime, settings.conversation.time);
-    setBooleanAttribute(attributeNames.timeAndUnreadCount, settings.chatList.timeAndUnreadCount);
-    setBooleanAttribute(attributeNames.messagePreview, settings.chatList.messagePreview);
+    setBooleanAttribute(attributeNames.listName, listEnabled && settings.chatList.name);
+    setBooleanAttribute(attributeNames.listAvatar, listEnabled && settings.chatList.avatar);
+    setBooleanAttribute(
+      attributeNames.timeAndUnreadCount,
+      listEnabled && settings.chatList.timeAndUnreadCount,
+    );
+    setBooleanAttribute(attributeNames.messagePreview, listEnabled && settings.chatList.messagePreview);
+    setBooleanAttribute(
+      attributeNames.conversationName,
+      conversationEnabled && settings.conversation.name,
+    );
+    setBooleanAttribute(
+      attributeNames.conversationAvatar,
+      conversationEnabled && settings.conversation.avatar,
+    );
+    setBooleanAttribute(
+      attributeNames.conversationTime,
+      conversationEnabled && settings.conversation.time,
+    );
     document.documentElement.removeAttribute("data-wa-privacy-name");
     document.documentElement.removeAttribute("data-wa-privacy-avatar");
     document.documentElement.removeAttribute("data-wa-privacy-time");
     document.documentElement.removeAttribute("data-wa-privacy-unread-count");
-    setBooleanAttribute(attributeNames.messagesAndCalls, settings.conversation.messagesAndCalls);
-    setBooleanAttribute(attributeNames.mediaAndAttachments, settings.conversation.mediaAndAttachments);
-    setBooleanAttribute(attributeNames.textInput, settings.conversation.textInput);
+    setBooleanAttribute(
+      attributeNames.messagesAndCalls,
+      conversationEnabled && settings.conversation.messagesAndCalls,
+    );
+    setBooleanAttribute(
+      attributeNames.mediaAndAttachments,
+      conversationEnabled && settings.conversation.mediaAndAttachments,
+    );
+    setBooleanAttribute(
+      attributeNames.textInput,
+      conversationEnabled && settings.conversation.textInput,
+    );
   }
 
   // Protect the first render with privacy-first defaults while storage resolves.

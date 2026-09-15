@@ -78,7 +78,7 @@ test("privacy stylesheet contains every fixture-backed selector contract", async
     css.indexOf("/* This positive message-pane scope"),
   );
 
-  assert.match(css, /--wa-privacy-style-version: 10/);
+  assert.match(css, /--wa-privacy-style-version: 11/);
   assert.doesNotMatch(css, /data-wa-privacy-name=/);
   assert.doesNotMatch(css, /data-wa-privacy-avatar=/);
   assert.match(listNameRules, /data-wa-privacy-list-name/);
@@ -145,13 +145,14 @@ test("popup exposes independent list and conversation identity controls", async 
   assert.doesNotMatch(html, /Lists &amp; Identity/);
   assert.doesNotMatch(html, /<h2[^>]*>Chat list<\/h2>/i);
   assert.match(html, /data-setting="chatList\.timeAndUnreadCount"/);
+  assert.match(html, /data-setting="chatList\.enabled"/);
   assert.doesNotMatch(html, /data-setting="chatList\.(?:time|unreadCount)"/);
   assert.match(html, /data-setting="conversation\.name"/);
+  assert.match(html, /data-setting="conversation\.enabled"/);
   assert.match(html, /data-setting="conversation\.avatar"/);
   assert.match(html, /data-setting="conversation\.time"/);
-  assert.equal(html.match(/>4 controls</g)?.length, 1);
-  assert.equal(html.match(/>6 controls</g)?.length, 1);
-  assert.equal(html.match(/<input type="checkbox" data-setting=/g)?.length, 11);
+  assert.doesNotMatch(html, />[46] controls</);
+  assert.equal(html.match(/<input type="checkbox" data-setting=/g)?.length, 13);
 });
 
 test("production code contains no networking or remote resources", async () => {

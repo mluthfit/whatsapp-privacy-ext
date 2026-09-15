@@ -143,7 +143,7 @@ body[data-enabled="false"] #master-status {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 5px 8px;
+  padding: 0 5px 4px;
   border-bottom: 1px solid #cbd8d0;
 }
 
@@ -193,6 +193,21 @@ body[data-enabled="false"] #master-status {
   height: 22px;
   flex: 0 0 auto;
   align-items: center;
+}
+
+.section-heading .switch,
+.section-heading .switch-track {
+  width: 34px;
+  height: 18px;
+}
+
+.section-heading .switch-track::after {
+  width: 12px;
+  height: 12px;
+}
+
+.section-heading .switch input:checked + .switch-track::after {
+  transform: translateX(16px);
 }
 
 .switch input {

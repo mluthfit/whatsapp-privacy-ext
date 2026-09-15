@@ -1,13 +1,15 @@
 namespace WAPrivacy {
   export const SETTINGS_KEY = "privacySettings";
-  export const STYLE_VERSION = "10";
+  export const STYLE_VERSION = "11";
 
   export type SettingPath =
     | "enabled"
+    | "chatList.enabled"
     | "chatList.name"
     | "chatList.avatar"
     | "chatList.timeAndUnreadCount"
     | "chatList.messagePreview"
+    | "conversation.enabled"
     | "conversation.name"
     | "conversation.avatar"
     | "conversation.time"
@@ -18,12 +20,14 @@ namespace WAPrivacy {
   export interface PrivacySettings {
     enabled: boolean;
     chatList: {
+      enabled: boolean;
       name: boolean;
       avatar: boolean;
       timeAndUnreadCount: boolean;
       messagePreview: boolean;
     };
     conversation: {
+      enabled: boolean;
       name: boolean;
       avatar: boolean;
       time: boolean;
@@ -45,12 +49,14 @@ namespace WAPrivacy {
     return {
       enabled: true,
       chatList: {
+        enabled: true,
         name: true,
         avatar: true,
         timeAndUnreadCount: true,
         messagePreview: true,
       },
       conversation: {
+        enabled: true,
         name: true,
         avatar: true,
         time: true,
@@ -73,12 +79,14 @@ namespace WAPrivacy {
     return {
       enabled: booleanOrDefault(root.enabled),
       chatList: {
+        enabled: booleanOrDefault(chatList.enabled),
         name: booleanOrDefault(chatList.name),
         avatar: booleanOrDefault(chatList.avatar),
         timeAndUnreadCount,
         messagePreview: booleanOrDefault(chatList.messagePreview),
       },
       conversation: {
+        enabled: booleanOrDefault(conversation.enabled),
         name: typeof conversation.name === "boolean"
           ? conversation.name
           : booleanOrDefault(chatList.name),
@@ -104,8 +112,9 @@ namespace WAPrivacy {
     }
 
     return hasExactKeys(value, ["enabled", "chatList", "conversation"])
-      && hasExactKeys(value.chatList, ["name", "avatar", "timeAndUnreadCount", "messagePreview"])
+      && hasExactKeys(value.chatList, ["enabled", "name", "avatar", "timeAndUnreadCount", "messagePreview"])
       && hasExactKeys(value.conversation, [
+        "enabled",
         "name",
         "avatar",
         "time",
@@ -147,6 +156,9 @@ namespace WAPrivacy {
       case "enabled":
         next.enabled = value;
         break;
+      case "chatList.enabled":
+        next.chatList.enabled = value;
+        break;
       case "chatList.name":
         next.chatList.name = value;
         break;
@@ -158,6 +170,9 @@ namespace WAPrivacy {
         break;
       case "chatList.messagePreview":
         next.chatList.messagePreview = value;
+        break;
+      case "conversation.enabled":
+        next.conversation.enabled = value;
         break;
       case "conversation.name":
         next.conversation.name = value;

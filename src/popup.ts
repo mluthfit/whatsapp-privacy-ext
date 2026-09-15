@@ -32,10 +32,12 @@ function showFallbackView(): void {
 function settingValue(path: WAPrivacy.SettingPath): boolean {
   switch (path) {
     case "enabled": return settings.enabled;
+    case "chatList.enabled": return settings.chatList.enabled;
     case "chatList.name": return settings.chatList.name;
     case "chatList.avatar": return settings.chatList.avatar;
     case "chatList.timeAndUnreadCount": return settings.chatList.timeAndUnreadCount;
     case "chatList.messagePreview": return settings.chatList.messagePreview;
+    case "conversation.enabled": return settings.conversation.enabled;
     case "conversation.name": return settings.conversation.name;
     case "conversation.avatar": return settings.conversation.avatar;
     case "conversation.time": return settings.conversation.time;
