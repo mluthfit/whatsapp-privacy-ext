@@ -141,7 +141,8 @@ test("privacy stylesheet contains every fixture-backed selector contract", async
 
 test("popup exposes independent list and conversation identity controls", async () => {
   const html = await readFile(new URL("../dist/popup.html", import.meta.url), "utf8");
-  assert.match(html, /<h2 id="lists-identity-heading">Lists &amp; Identity<\/h2>/);
+  assert.match(html, /<h2 id="list-views-heading">List Views<\/h2>/);
+  assert.doesNotMatch(html, /Lists &amp; Identity/);
   assert.doesNotMatch(html, /<h2[^>]*>Chat list<\/h2>/i);
   assert.match(html, /data-setting="chatList\.timeAndUnreadCount"/);
   assert.doesNotMatch(html, /data-setting="chatList\.(?:time|unreadCount)"/);

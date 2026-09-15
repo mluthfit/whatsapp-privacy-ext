@@ -40,7 +40,7 @@ html[data-wa-privacy-enabled="true"][data-wa-privacy-list-name="true"]
   filter: blur(var(--wa-privacy-blur)) !important;
 }
 
-/* Conversation names have a separate control from list identities. */
+/* Conversation names have a separate control from list-view identities. */
 html[data-wa-privacy-enabled="true"][data-wa-privacy-conversation-name="true"]
   [data-testid="conversation-header"] [data-testid="conversation-info-header-chat-title"]:not(:hover),
 html[data-wa-privacy-enabled="true"][data-wa-privacy-conversation-name="true"]

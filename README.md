@@ -11,7 +11,7 @@ A local-only Chrome extension that visually blurs sensitive content on WhatsApp 
 - Recovery injection for tabs opened before the extension, with a reload fallback when injection fails.
 - Local-only operation with no backend, analytics, telemetry, or remote resources.
 
-### Lists & Identity
+### List Views
 
 - **Name** protects contact names, group names, community labels, and Status contact names.
 - **Avatar** protects contact, group, community, and Status identity images.
@@ -75,7 +75,7 @@ The source is organized as follows:
 
 ## Privacy model
 
-- Only eleven boolean values are stored: Master Privacy, four Lists & Identity categories, and six Conversation categories.
+- Only eleven boolean values are stored: Master Privacy, four List Views categories, and six Conversation categories.
 - The extension has no backend, analytics, telemetry, or external network requests.
 - WhatsApp names, messages, attachments, call details, and composer text are never stored or transmitted by the extension.
 - Blur is visual only. The underlying WhatsApp content remains available to WhatsApp, browser developer tools, accessibility tools, and other software with page access.
