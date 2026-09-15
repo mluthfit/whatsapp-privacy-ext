@@ -40,8 +40,12 @@ test("privacy stylesheet contains every fixture-backed selector contract", async
   for (const selector of requiredSelectors) {
     assert.match(css, new RegExp(`data-testid=\\"${selector}\\"`));
   }
-  const nameRules = css.slice(
+  const listNameRules = css.slice(
     css.indexOf("/* Ordinary chat names"),
+    css.indexOf("/* Conversation identities"),
+  );
+  const conversationNameRules = css.slice(
+    css.indexOf("/* Conversation identities"),
     css.indexOf("/* The first chat-row column"),
   );
   const avatarRules = css.slice(
@@ -61,14 +65,21 @@ test("privacy stylesheet contains every fixture-backed selector contract", async
     css.indexOf("/* This positive message-pane scope"),
   );
 
-  assert.match(css, /--wa-privacy-style-version: 7/);
-  assert.match(nameRules, /\[data-testid="cell-frame-label"\]/);
-  assert.doesNotMatch(nameRules, /last-msg-status/);
-  assert.match(nameRules, /:has\(\s*\[data-testid="cell-frame-label"\]\s*\):not\(:has\(/);
-  assert.match(nameRules, /\[data-testid="cell-frame-label"\] > span\[title\]:hover/);
-  assert.match(nameRules, /\[data-testid="status-list-drawer"\]/);
-  assert.match(nameRules, /\[data-testid="community-tab-drawer"\]/);
-  assert.match(nameRules, /\[data-testid="community-navigation-drawer"\]/);
+  assert.match(css, /--wa-privacy-style-version: 8/);
+  assert.doesNotMatch(css, /data-wa-privacy-name=/);
+  assert.match(listNameRules, /data-wa-privacy-list-name/);
+  assert.match(listNameRules, /\[data-testid="cell-frame-label"\]/);
+  assert.doesNotMatch(listNameRules, /last-msg-status/);
+  assert.doesNotMatch(listNameRules, /conversation-header|group-message-author/);
+  assert.match(listNameRules, /:has\(\s*\[data-testid="cell-frame-label"\]\s*\):not\(:has\(/);
+  assert.match(listNameRules, /\[data-testid="cell-frame-label"\] > span\[title\]:hover/);
+  assert.match(listNameRules, /\[data-testid="status-list-drawer"\]/);
+  assert.match(listNameRules, /\[data-testid="community-tab-drawer"\]/);
+  assert.match(listNameRules, /\[data-testid="community-navigation-drawer"\]/);
+  assert.match(conversationNameRules, /data-wa-privacy-conversation-name/);
+  assert.match(conversationNameRules, /conversation-header/);
+  assert.match(conversationNameRules, /group-message-author/);
+  assert.doesNotMatch(conversationNameRules, /chat-list|status-list-drawer|community-tab-drawer/);
   assert.match(avatarRules, /button\[data-testid="status-header"\]/);
   assert.match(avatarRules, /\[data-testid="status-thumbnail"\] > div:last-child/);
   assert.match(avatarRules, /community-tab-community-cell/);
@@ -106,7 +117,8 @@ test("popup exposes Lists & Identity with one combined time and unread count con
   assert.doesNotMatch(html, /<h2[^>]*>Chat list<\/h2>/i);
   assert.match(html, /data-setting="chatList\.timeAndUnreadCount"/);
   assert.doesNotMatch(html, /data-setting="chatList\.(?:time|unreadCount)"/);
-  assert.match(html, />4 controls</);
+  assert.match(html, /data-setting="conversation\.name"/);
+  assert.equal(html.match(/>4 controls</g)?.length, 2);
 });
 
 test("production code contains no networking or remote resources", async () => {

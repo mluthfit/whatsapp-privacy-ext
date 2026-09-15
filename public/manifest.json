@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Privacy for WhatsApp Web",
   "description": "Locally blur sensitive content on WhatsApp Web and reveal it on hover.",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "minimum_chrome_version": "105",
   "permissions": ["activeTab", "scripting", "storage"],
   "host_permissions": ["https://web.whatsapp.com/*"],

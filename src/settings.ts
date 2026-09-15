@@ -1,6 +1,6 @@
 namespace WAPrivacy {
   export const SETTINGS_KEY = "privacySettings";
-  export const STYLE_VERSION = "7";
+  export const STYLE_VERSION = "8";
 
   export type SettingPath =
     | "enabled"
@@ -8,6 +8,7 @@ namespace WAPrivacy {
     | "chatList.avatar"
     | "chatList.timeAndUnreadCount"
     | "chatList.messagePreview"
+    | "conversation.name"
     | "conversation.messagesAndCalls"
     | "conversation.mediaAndAttachments"
     | "conversation.textInput";
@@ -21,6 +22,7 @@ namespace WAPrivacy {
       messagePreview: boolean;
     };
     conversation: {
+      name: boolean;
       messagesAndCalls: boolean;
       mediaAndAttachments: boolean;
       textInput: boolean;
@@ -45,6 +47,7 @@ namespace WAPrivacy {
         messagePreview: true,
       },
       conversation: {
+        name: true,
         messagesAndCalls: true,
         mediaAndAttachments: true,
         textInput: true,
@@ -70,6 +73,9 @@ namespace WAPrivacy {
         messagePreview: booleanOrDefault(chatList.messagePreview),
       },
       conversation: {
+        name: typeof conversation.name === "boolean"
+          ? conversation.name
+          : booleanOrDefault(chatList.name),
         messagesAndCalls: booleanOrDefault(conversation.messagesAndCalls),
         mediaAndAttachments: booleanOrDefault(conversation.mediaAndAttachments),
         textInput: booleanOrDefault(conversation.textInput),
@@ -89,7 +95,7 @@ namespace WAPrivacy {
 
     return hasExactKeys(value, ["enabled", "chatList", "conversation"])
       && hasExactKeys(value.chatList, ["name", "avatar", "timeAndUnreadCount", "messagePreview"])
-      && hasExactKeys(value.conversation, ["messagesAndCalls", "mediaAndAttachments", "textInput"])
+      && hasExactKeys(value.conversation, ["name", "messagesAndCalls", "mediaAndAttachments", "textInput"])
       && typeof value.enabled === "boolean"
       && Object.values(value.chatList).every((item) => typeof item === "boolean")
       && Object.values(value.conversation).every((item) => typeof item === "boolean");
@@ -135,6 +141,9 @@ namespace WAPrivacy {
         break;
       case "chatList.messagePreview":
         next.chatList.messagePreview = value;
+        break;
+      case "conversation.name":
+        next.conversation.name = value;
         break;
       case "conversation.messagesAndCalls":
         next.conversation.messagesAndCalls = value;

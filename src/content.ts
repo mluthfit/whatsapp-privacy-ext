@@ -9,7 +9,8 @@ interface PrivacyRuntimeGlobal {
 
   const attributeNames = {
     enabled: "data-wa-privacy-enabled",
-    name: "data-wa-privacy-name",
+    listName: "data-wa-privacy-list-name",
+    conversationName: "data-wa-privacy-conversation-name",
     avatar: "data-wa-privacy-avatar",
     timeAndUnreadCount: "data-wa-privacy-time-unread-count",
     messagePreview: "data-wa-privacy-message-preview",
@@ -24,10 +25,12 @@ interface PrivacyRuntimeGlobal {
 
   function applySettings(settings: WAPrivacy.PrivacySettings): void {
     setBooleanAttribute(attributeNames.enabled, settings.enabled);
-    setBooleanAttribute(attributeNames.name, settings.chatList.name);
+    setBooleanAttribute(attributeNames.listName, settings.chatList.name);
+    setBooleanAttribute(attributeNames.conversationName, settings.conversation.name);
     setBooleanAttribute(attributeNames.avatar, settings.chatList.avatar);
     setBooleanAttribute(attributeNames.timeAndUnreadCount, settings.chatList.timeAndUnreadCount);
     setBooleanAttribute(attributeNames.messagePreview, settings.chatList.messagePreview);
+    document.documentElement.removeAttribute("data-wa-privacy-name");
     document.documentElement.removeAttribute("data-wa-privacy-time");
     document.documentElement.removeAttribute("data-wa-privacy-unread-count");
     setBooleanAttribute(attributeNames.messagesAndCalls, settings.conversation.messagesAndCalls);
