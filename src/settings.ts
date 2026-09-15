@@ -1,6 +1,6 @@
 namespace WAPrivacy {
   export const SETTINGS_KEY = "privacySettings";
-  export const STYLE_VERSION = "8";
+  export const STYLE_VERSION = "10";
 
   export type SettingPath =
     | "enabled"
@@ -9,6 +9,8 @@ namespace WAPrivacy {
     | "chatList.timeAndUnreadCount"
     | "chatList.messagePreview"
     | "conversation.name"
+    | "conversation.avatar"
+    | "conversation.time"
     | "conversation.messagesAndCalls"
     | "conversation.mediaAndAttachments"
     | "conversation.textInput";
@@ -23,6 +25,8 @@ namespace WAPrivacy {
     };
     conversation: {
       name: boolean;
+      avatar: boolean;
+      time: boolean;
       messagesAndCalls: boolean;
       mediaAndAttachments: boolean;
       textInput: boolean;
@@ -48,6 +52,8 @@ namespace WAPrivacy {
       },
       conversation: {
         name: true,
+        avatar: true,
+        time: true,
         messagesAndCalls: true,
         mediaAndAttachments: true,
         textInput: true,
@@ -76,6 +82,10 @@ namespace WAPrivacy {
         name: typeof conversation.name === "boolean"
           ? conversation.name
           : booleanOrDefault(chatList.name),
+        avatar: typeof conversation.avatar === "boolean"
+          ? conversation.avatar
+          : booleanOrDefault(chatList.avatar),
+        time: booleanOrDefault(conversation.time),
         messagesAndCalls: booleanOrDefault(conversation.messagesAndCalls),
         mediaAndAttachments: booleanOrDefault(conversation.mediaAndAttachments),
         textInput: booleanOrDefault(conversation.textInput),
@@ -95,7 +105,14 @@ namespace WAPrivacy {
 
     return hasExactKeys(value, ["enabled", "chatList", "conversation"])
       && hasExactKeys(value.chatList, ["name", "avatar", "timeAndUnreadCount", "messagePreview"])
-      && hasExactKeys(value.conversation, ["name", "messagesAndCalls", "mediaAndAttachments", "textInput"])
+      && hasExactKeys(value.conversation, [
+        "name",
+        "avatar",
+        "time",
+        "messagesAndCalls",
+        "mediaAndAttachments",
+        "textInput",
+      ])
       && typeof value.enabled === "boolean"
       && Object.values(value.chatList).every((item) => typeof item === "boolean")
       && Object.values(value.conversation).every((item) => typeof item === "boolean");
@@ -144,6 +161,12 @@ namespace WAPrivacy {
         break;
       case "conversation.name":
         next.conversation.name = value;
+        break;
+      case "conversation.avatar":
+        next.conversation.avatar = value;
+        break;
+      case "conversation.time":
+        next.conversation.time = value;
         break;
       case "conversation.messagesAndCalls":
         next.conversation.messagesAndCalls = value;

@@ -93,7 +93,7 @@ p {
   align-items: center;
   justify-content: space-between;
   gap: 18px;
-  margin: 12px 16px 16px;
+  margin: 10px 16px 12px;
   padding: 12px 16px;
   color: #f5fff9;
   background: #123d31;
@@ -136,7 +136,7 @@ body[data-enabled="false"] #master-status {
 }
 
 .settings-section {
-  padding: 0 16px 12px;
+  padding: 0 16px 10px;
 }
 
 .section-heading {
@@ -168,7 +168,7 @@ body[data-enabled="false"] #master-status {
 
 .setting-row {
   display: flex;
-  min-height: 38px;
+  min-height: 34px;
   align-items: center;
   justify-content: space-between;
   gap: 16px;

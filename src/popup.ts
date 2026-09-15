@@ -37,6 +37,8 @@ function settingValue(path: WAPrivacy.SettingPath): boolean {
     case "chatList.timeAndUnreadCount": return settings.chatList.timeAndUnreadCount;
     case "chatList.messagePreview": return settings.chatList.messagePreview;
     case "conversation.name": return settings.conversation.name;
+    case "conversation.avatar": return settings.conversation.avatar;
+    case "conversation.time": return settings.conversation.time;
     case "conversation.messagesAndCalls": return settings.conversation.messagesAndCalls;
     case "conversation.mediaAndAttachments": return settings.conversation.mediaAndAttachments;
     case "conversation.textInput": return settings.conversation.textInput;

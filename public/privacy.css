@@ -1,6 +1,6 @@
 :root {
   --wa-privacy-blur: 7px;
-  --wa-privacy-style-version: 8;
+  --wa-privacy-style-version: 10;
 }
 
 /* Ordinary chat names reveal independently. */
@@ -40,9 +40,12 @@ html[data-wa-privacy-enabled="true"][data-wa-privacy-list-name="true"]
   filter: blur(var(--wa-privacy-blur)) !important;
 }
 
-/* Conversation identities have a separate control from list identities. */
+/* Conversation names have a separate control from list identities. */
 html[data-wa-privacy-enabled="true"][data-wa-privacy-conversation-name="true"]
   [data-testid="conversation-header"] [data-testid="conversation-info-header-chat-title"]:not(:hover),
+html[data-wa-privacy-enabled="true"][data-wa-privacy-conversation-name="true"]
+  [data-testid="conversation-header"] [data-testid="conversation-info-header"]
+  [data-testid="chat-subtitle"] [data-testid~="selectable-text"]:not(:hover),
 html[data-wa-privacy-enabled="true"][data-wa-privacy-conversation-name="true"]
   [data-testid="conversation-panel-messages"] [data-testid="msg-container"]
   :is([data-testid="author"], [data-testid="message-author"], [data-testid="group-message-author"]):not(:hover) {
@@ -50,24 +53,22 @@ html[data-wa-privacy-enabled="true"][data-wa-privacy-conversation-name="true"]
 }
 
 /* The first chat-row column contains all avatar variants in the captured layouts. */
-html[data-wa-privacy-enabled="true"][data-wa-privacy-avatar="true"]
+html[data-wa-privacy-enabled="true"][data-wa-privacy-list-avatar="true"]
   :is([data-testid="chat-list"] [role="row"], [data-testid="archived-chatlist"] [role="listitem"])
-  [data-testid="cell-frame-container"] > div:has(+ div [data-testid="cell-frame-title"]):not(:hover),
-html[data-wa-privacy-enabled="true"][data-wa-privacy-avatar="true"]
-  [data-testid="conversation-header"] img[draggable="false"][alt=""]:not(:hover) {
+  [data-testid="cell-frame-container"] > div:has(+ div [data-testid="cell-frame-title"]):not(:hover) {
   filter: blur(var(--wa-privacy-blur)) !important;
 }
 
-html[data-wa-privacy-enabled="true"][data-wa-privacy-avatar="true"]
+html[data-wa-privacy-enabled="true"][data-wa-privacy-list-avatar="true"]
   button[data-testid="status-header"] img[draggable="false"][alt=""]:not(:hover),
-html[data-wa-privacy-enabled="true"][data-wa-privacy-avatar="true"]
+html[data-wa-privacy-enabled="true"][data-wa-privacy-list-avatar="true"]
   [data-testid="status-list-drawer"] [data-testid="status-row-cell"]
   [data-testid="status-thumbnail"] > div:last-child:not(:hover) {
   filter: blur(var(--wa-privacy-blur)) !important;
 }
 
 /* Communities use avatar owners so image and generated variants behave identically. */
-html[data-wa-privacy-enabled="true"][data-wa-privacy-avatar="true"]
+html[data-wa-privacy-enabled="true"][data-wa-privacy-list-avatar="true"]
   [data-testid="community-tab-drawer"]
   :is(
     [data-testid="community-tab-community-cell"][role="button"],
@@ -75,12 +76,22 @@ html[data-wa-privacy-enabled="true"][data-wa-privacy-avatar="true"]
   )
   [data-testid="cell-frame-container"]
   > div:has(+ div > [role="gridcell"][aria-colindex="2"]):not(:hover),
-html[data-wa-privacy-enabled="true"][data-wa-privacy-avatar="true"]
+html[data-wa-privacy-enabled="true"][data-wa-privacy-list-avatar="true"]
   [data-testid="community-navigation-drawer"]
   [data-testid="cell-frame-container"]:has(
     [data-testid="cell-frame-title"] > span[dir="auto"]
   )
   > div:has(+ div > [role="gridcell"][aria-colindex="2"]):not(:hover) {
+  filter: blur(var(--wa-privacy-blur)) !important;
+}
+
+/* The complete header avatar owner supports image and generated variants. */
+html[data-wa-privacy-enabled="true"][data-wa-privacy-conversation-avatar="true"]
+  [data-testid="conversation-header"]
+  :is(div, button):has(+ [data-testid="conversation-info-header"]):not(:hover),
+html[data-wa-privacy-enabled="true"][data-wa-privacy-conversation-avatar="true"]
+  [data-testid="conversation-panel-messages"]
+  [data-testid="group-chat-profile-picture"]:not(:hover) {
   filter: blur(var(--wa-privacy-blur)) !important;
 }
 
@@ -128,6 +139,13 @@ html[data-wa-privacy-enabled="true"][data-wa-privacy-time-unread-count="true"]
   filter: blur(var(--wa-privacy-blur)) !important;
 }
 
+/* Target only message timestamps so edited and delivery indicators stay visible. */
+html[data-wa-privacy-enabled="true"][data-wa-privacy-conversation-time="true"]
+  [data-testid="conversation-panel-messages"] [data-testid="msg-container"]
+  [data-testid="msg-meta"] > span[dir="auto"] > span:last-child:not(:hover) {
+  filter: blur(var(--wa-privacy-blur)) !important;
+}
+
 html[data-wa-privacy-enabled="true"][data-wa-privacy-message-preview="true"]
   :is([data-testid="chat-list"] [role="row"], [data-testid="archived-chatlist"] [role="listitem"])
   [data-testid="last-msg-status"]:not(:hover) {
@@ -165,7 +183,8 @@ html[data-wa-privacy-enabled="true"][data-wa-privacy-messages-calls="true"]
     [data-testid="url-element"]
   ):not(:hover),
 html[data-wa-privacy-enabled="true"][data-wa-privacy-messages-calls="true"]
-  [data-testid="conversation-panel-messages"] [data-testid="call-log-system-message"]:not(:hover) {
+  [data-testid="conversation-panel-messages"] [data-testid="call-log-system-message"]
+  > div:has([data-testid="call-log-icon-chip"]):not(:hover) {
   filter: blur(var(--wa-privacy-blur)) !important;
 }
 

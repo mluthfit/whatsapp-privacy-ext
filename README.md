@@ -14,7 +14,7 @@ A local-only Chrome extension that visually blurs sensitive content on WhatsApp 
 ### Lists & Identity
 
 - **Name** protects contact names, group names, community labels, and Status contact names.
-- **Avatar** protects contact, group, community, and conversation-header images.
+- **Avatar** protects contact, group, community, and Status identity images.
 - **Time & Unread Count** protects both fields with one setting. Hovering either field reveals both for that row.
 - **Message Preview** protects the complete preview line, including sender prefixes, attachment or call icons, and preview text.
 
@@ -40,12 +40,14 @@ Status viewer content is not included in this release.
 
 ### Conversation
 
-- **Name** protects the active conversation header name and group-message sender labels.
+- **Name** protects the active conversation header name, its participant subtitle, and group-message sender labels.
+- **Avatar** protects the active conversation header avatar and each sender avatar in group conversations.
+- **Time** protects incoming and outgoing message timestamps.
 - **Messages & Calls** protects message text, emoji, expanded `Read more` content, contextual search text such as `Get more info about this message. Search on web`, link text, quotes, captions, and call cards.
 - **Media & Attachments** protects images, videos, stickers, audio interfaces, documents, link thumbnails, and location thumbnails inside the conversation.
 - **Text Input** protects non-empty composer text. The empty placeholder and composer controls remain visible.
 
-Standalone message timestamps and delivery or read indicators remain visible. Media opened in WhatsApp's fullscreen viewer is intentionally not blurred.
+Delivery or read indicators and edited labels remain visible. Media opened in WhatsApp's fullscreen viewer is intentionally not blurred.
 
 ## Build and install
 
@@ -73,7 +75,7 @@ The source is organized as follows:
 
 ## Privacy model
 
-- Only nine boolean values are stored: Master Privacy, four Lists & Identity categories, and four Conversation categories.
+- Only eleven boolean values are stored: Master Privacy, four Lists & Identity categories, and six Conversation categories.
 - The extension has no backend, analytics, telemetry, or external network requests.
 - WhatsApp names, messages, attachments, call details, and composer text are never stored or transmitted by the extension.
 - Blur is visual only. The underlying WhatsApp content remains available to WhatsApp, browser developer tools, accessibility tools, and other software with page access.
