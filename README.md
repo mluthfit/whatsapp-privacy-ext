@@ -16,12 +16,14 @@ A local-only Chrome extension that visually blurs sensitive content on WhatsApp 
 
 The header toggle pauses or restores all List Views blur while retaining the four settings below it.
 
-- **Name** protects contact names, group names, community labels, and Status contact names.
-- **Avatar** protects contact, group, community, and Status identity images.
+- **Name** protects contact names, group names, community labels, Status contact names, people listed in New Chat or New Group, and the complete self-row identity including `(You)`.
+- **Avatar** protects contact, group, community, and Status identity images, including people and the self row in New Chat or New Group.
 - **Time & Unread Count** protects both fields with one setting. Hovering either field reveals both for that row.
-- **Message Preview** protects the complete preview line, including sender prefixes, attachment or call icons, and preview text.
+- **Message Preview** protects the complete preview line, including sender prefixes, attachment or call icons, preview text, contact status/about text, and the `Message yourself` self-row status.
 
 Community rows reveal the community and subgroup names together when either name is hovered. Other fields in the row remain independently protected.
+
+New Chat and New Group keep drawer titles, search fields, action rows, and alphabetical headings visible.
 
 ### Communities
 

@@ -51,7 +51,7 @@ test("content runtime starts private, loads storage, syncs changes, and reports 
     chrome,
     document: { documentElement },
     getComputedStyle: () => ({
-      getPropertyValue: (name) => name === "--wa-privacy-style-version" ? "11" : "",
+      getPropertyValue: (name) => name === "--wa-privacy-style-version" ? "14" : "",
     }),
   });
   const settingsSource = await readFile(new URL("../dist/settings.js", import.meta.url), "utf8");
@@ -132,6 +132,6 @@ test("content runtime starts private, loads storage, syncs changes, and reports 
   assert.deepEqual(JSON.parse(JSON.stringify(response)), {
     ok: true,
     version: 1,
-    styleVersion: "11",
+    styleVersion: "14",
   });
 });

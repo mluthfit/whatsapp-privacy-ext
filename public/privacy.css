@@ -1,6 +1,6 @@
 :root {
   --wa-privacy-blur: 7px;
-  --wa-privacy-style-version: 11;
+  --wa-privacy-style-version: 14;
 }
 
 /* Ordinary chat names reveal independently. */
@@ -9,6 +9,18 @@ html[data-wa-privacy-enabled="true"][data-wa-privacy-list-name="true"]
     [data-testid="cell-frame-label"]
   ))
   [data-testid="cell-frame-title"] span[title]:not(:hover),
+html[data-wa-privacy-enabled="true"][data-wa-privacy-list-name="true"]
+  :is([data-testid="new-chat-drawer"], [data-testid="new-group-drawer-participants"])
+  [data-testid="contact-list-key"] [role="listitem"]
+  [data-testid="cell-frame-container"]
+  [data-testid="cell-frame-title"] span[dir="auto"][title]:not(:hover),
+html[data-wa-privacy-enabled="true"][data-wa-privacy-list-name="true"]
+  [data-testid="new-chat-drawer"] [data-testid="contact-list-key"] [role="listitem"]
+  [data-testid="message-yourself-row"] [data-testid="cell-frame-title"]:not(:hover),
+html[data-wa-privacy-enabled="true"][data-wa-privacy-list-name="true"]
+  :is([data-testid="new-chat-drawer"], [data-testid="new-group-drawer-participants"])
+  [data-testid="contact-list-key"] [role="listitem"]
+  [data-testid="out-contact-cell"] [data-testid="cell-frame-title"]:not(:hover),
 /* A community row coordinates hover across its community and subgroup names. */
 html[data-wa-privacy-enabled="true"][data-wa-privacy-list-name="true"]
   :is([data-testid="chat-list"] [role="row"], [data-testid="archived-chatlist"] [role="listitem"]):has(
@@ -55,7 +67,16 @@ html[data-wa-privacy-enabled="true"][data-wa-privacy-conversation-name="true"]
 /* The first chat-row column contains all avatar variants in the captured layouts. */
 html[data-wa-privacy-enabled="true"][data-wa-privacy-list-avatar="true"]
   :is([data-testid="chat-list"] [role="row"], [data-testid="archived-chatlist"] [role="listitem"])
-  [data-testid="cell-frame-container"] > div:has(+ div [data-testid="cell-frame-title"]):not(:hover) {
+  [data-testid="cell-frame-container"] > div:has(+ div [data-testid="cell-frame-title"]):not(:hover),
+html[data-wa-privacy-enabled="true"][data-wa-privacy-list-avatar="true"]
+  :is([data-testid="new-chat-drawer"], [data-testid="new-group-drawer-participants"])
+  [data-testid="contact-list-key"] [role="listitem"]
+  :is(
+    [data-testid="cell-frame-container"],
+    [data-testid="message-yourself-row"],
+    [data-testid="out-contact-cell"]
+  )
+  > div:has(+ div [data-testid="cell-frame-title"]):not(:hover) {
   filter: blur(var(--wa-privacy-blur)) !important;
 }
 
@@ -148,7 +169,16 @@ html[data-wa-privacy-enabled="true"][data-wa-privacy-conversation-time="true"]
 
 html[data-wa-privacy-enabled="true"][data-wa-privacy-message-preview="true"]
   :is([data-testid="chat-list"] [role="row"], [data-testid="archived-chatlist"] [role="listitem"])
-  [data-testid="last-msg-status"]:not(:hover) {
+  [data-testid="last-msg-status"]:not(:hover),
+html[data-wa-privacy-enabled="true"][data-wa-privacy-message-preview="true"]
+  :is([data-testid="new-chat-drawer"], [data-testid="new-group-drawer-participants"])
+  [data-testid="contact-list-key"] [role="listitem"]
+  [data-testid="cell-frame-container"] [data-testid="cell-frame-secondary"]:has(
+    [data-testid~="selectable-text"][dir="auto"][title]
+  ):not(:hover),
+html[data-wa-privacy-enabled="true"][data-wa-privacy-message-preview="true"]
+  [data-testid="new-chat-drawer"] [data-testid="contact-list-key"] [role="listitem"]
+  [data-testid="message-yourself-row"] [data-testid="cell-frame-secondary"]:not(:hover) {
   filter: blur(var(--wa-privacy-blur)) !important;
 }
 

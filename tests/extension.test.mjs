@@ -40,6 +40,10 @@ test("privacy stylesheet contains every fixture-backed selector contract", async
     "community-tab-community-cell",
     "community-tab-subgroup-cell",
     "community-navigation-drawer",
+    "new-chat-drawer",
+    "new-group-drawer-participants",
+    "contact-list-key",
+    "message-yourself-row",
   ];
 
   for (const selector of requiredSelectors) {
@@ -78,7 +82,7 @@ test("privacy stylesheet contains every fixture-backed selector contract", async
     css.indexOf("/* This positive message-pane scope"),
   );
 
-  assert.match(css, /--wa-privacy-style-version: 11/);
+  assert.match(css, /--wa-privacy-style-version: 14/);
   assert.doesNotMatch(css, /data-wa-privacy-name=/);
   assert.doesNotMatch(css, /data-wa-privacy-avatar=/);
   assert.match(listNameRules, /data-wa-privacy-list-name/);
@@ -90,6 +94,16 @@ test("privacy stylesheet contains every fixture-backed selector contract", async
   assert.match(listNameRules, /\[data-testid="status-list-drawer"\]/);
   assert.match(listNameRules, /\[data-testid="community-tab-drawer"\]/);
   assert.match(listNameRules, /\[data-testid="community-navigation-drawer"\]/);
+  assert.match(listNameRules, /\[data-testid="new-chat-drawer"\]/);
+  assert.match(listNameRules, /\[data-testid="new-group-drawer-participants"\]/);
+  assert.match(listNameRules, /\[data-testid="contact-list-key"\]/);
+  assert.match(listNameRules, /\[data-testid="message-yourself-row"\]/);
+  assert.match(
+    listNameRules,
+    /\[data-testid="message-yourself-row"\] \[data-testid="cell-frame-title"\]:not\(:hover\)/,
+  );
+  assert.match(listNameRules, /\[data-testid="out-contact-cell"\]/);
+  assert.doesNotMatch(listNameRules, /section-header/);
   assert.match(conversationNameRules, /data-wa-privacy-conversation-name/);
   assert.match(conversationNameRules, /conversation-header/);
   assert.match(conversationNameRules, /chat-subtitle/);
@@ -101,6 +115,11 @@ test("privacy stylesheet contains every fixture-backed selector contract", async
   assert.match(listAvatarRules, /community-tab-community-cell/);
   assert.match(listAvatarRules, /community-tab-subgroup-cell/);
   assert.match(listAvatarRules, /community-navigation-drawer/);
+  assert.match(listAvatarRules, /new-chat-drawer/);
+  assert.match(listAvatarRules, /new-group-drawer-participants/);
+  assert.match(listAvatarRules, /contact-list-key/);
+  assert.match(listAvatarRules, /message-yourself-row/);
+  assert.match(listAvatarRules, /out-contact-cell/);
   assert.doesNotMatch(listAvatarRules, /conversation-header/);
   assert.match(conversationAvatarRules, /data-wa-privacy-conversation-avatar/);
   assert.match(conversationAvatarRules, /conversation-info-header/);
@@ -121,6 +140,15 @@ test("privacy stylesheet contains every fixture-backed selector contract", async
   assert.match(conversationTimeRules, /span:last-child:not\(:hover\)/);
   assert.doesNotMatch(conversationTimeRules, /icon-unread-count|cell-frame-primary-detail/);
   assert.match(previewRules, /\[data-testid="last-msg-status"\]:not\(:hover\)/);
+  assert.match(previewRules, /\[data-testid="new-chat-drawer"\]/);
+  assert.match(previewRules, /\[data-testid="new-group-drawer-participants"\]/);
+  assert.match(previewRules, /\[data-testid="cell-frame-secondary"\]:has\(/);
+  assert.match(previewRules, /\[data-testid~="selectable-text"\]\[dir="auto"\]\[title\]/);
+  assert.match(
+    previewRules,
+    /\[data-testid="message-yourself-row"\] \[data-testid="cell-frame-secondary"\]:not\(:hover\)/,
+  );
+  assert.doesNotMatch(previewRules, /out-contact-cell|section-header/);
   assert.match(messageRules, /\[data-testid~="selectable-text"\]/);
   assert.match(
     messageRules,
