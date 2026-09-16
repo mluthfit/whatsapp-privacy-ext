@@ -146,7 +146,22 @@ function makePhonePolygon() {
 
 const phone = makePhonePolygon();
 
-function makeIcon(size) {
+const enabledPalette = {
+  outer: [18, 61, 49],
+  border: [25, 189, 124],
+  inner: [7, 95, 69],
+  core: [8, 124, 88],
+  phone: [237, 247, 241],
+};
+const disabledPalette = {
+  outer: [51, 58, 55],
+  border: [154, 163, 159],
+  inner: [89, 97, 93],
+  core: [115, 124, 119],
+  phone: [238, 241, 239],
+};
+
+function makeIcon(size, palette) {
   const stride = size * 4 + 1;
   const pixels = Buffer.alloc(stride * size);
   const samplesPerAxis = 4;
@@ -171,14 +186,14 @@ function makeIcon(size) {
           const vy = ((ny - logoTop) / logoHeight) * 430;
           let color;
 
-          if (isInsidePolygon(vx, vy, outerShield)) color = [18, 61, 49];
-          if (distanceToPolygon(vx, vy, innerShield) <= 4) color = [25, 189, 124];
-          if (isInsidePolygon(vx, vy, innerShield)) color = [7, 95, 69];
+          if (isInsidePolygon(vx, vy, outerShield)) color = palette.outer;
+          if (distanceToPolygon(vx, vy, innerShield) <= 4) color = palette.border;
+          if (isInsidePolygon(vx, vy, innerShield)) color = palette.inner;
           if (isInsidePolygon(vx, vy, innerShield) && distanceToPolygon(vx, vy, innerShield) <= 4) {
-            color = [25, 189, 124];
+            color = palette.border;
           }
-          if (isInsidePolygon(vx, vy, shieldCore)) color = [8, 124, 88];
-          if (isInsidePolygon(vx, vy, phone)) color = [237, 247, 241];
+          if (isInsidePolygon(vx, vy, shieldCore)) color = palette.core;
+          if (isInsidePolygon(vx, vy, phone)) color = palette.phone;
 
           if (color) {
             coverage += 1;
@@ -213,5 +228,6 @@ function makeIcon(size) {
 const iconDirectory = resolve(output, "icons");
 mkdirSync(iconDirectory, { recursive: true });
 for (const size of [16, 32, 48, 128]) {
-  writeFileSync(resolve(iconDirectory, `icon-${size}.png`), makeIcon(size));
+  writeFileSync(resolve(iconDirectory, `icon-${size}.png`), makeIcon(size, enabledPalette));
+  writeFileSync(resolve(iconDirectory, `icon-off-${size}.png`), makeIcon(size, disabledPalette));
 }

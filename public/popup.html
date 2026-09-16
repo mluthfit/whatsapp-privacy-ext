@@ -9,7 +9,7 @@
   <body>
     <main id="checking-view" class="view checking" role="status" aria-live="polite">
       <header class="state-header">
-        <img class="state-logo" src="logo.svg" alt="">
+        <img class="state-logo" data-privacy-logo src="logo.svg" alt="">
         <span class="state-code">CHECK / 00</span>
       </header>
       <div class="state-content checking-content">
@@ -34,7 +34,7 @@
           <p id="brand-state" class="eyebrow">LOCAL / PRIVATE / ACTIVE</p>
           <h1>WhatsApp Privacy</h1>
         </div>
-        <img class="brand-logo" src="logo.svg" alt="">
+        <img class="brand-logo" data-privacy-logo src="logo.svg" alt="">
       </header>
 
       <section class="master-panel" aria-labelledby="master-title">
@@ -155,14 +155,23 @@
       </section>
 
       <footer class="normal-footer">
-        <span>Hover to reveal protected content.</span>
+        <button
+          id="shortcut-settings-button"
+          class="shortcut-settings"
+          type="button"
+          title="Open Chrome shortcut settings"
+          aria-label="Open Chrome shortcut settings"
+        >
+          <span id="shortcut-hint">Panic: Ctrl+Shift+P</span>
+          <strong id="shortcut-action">CHANGE</strong>
+        </button>
         <strong>LOCAL ONLY</strong>
       </footer>
     </main>
 
     <main id="fallback-view" class="view fallback" role="alert" aria-atomic="true" hidden>
       <header class="state-header">
-        <img class="state-logo" src="logo.svg" alt="">
+        <img class="state-logo" data-privacy-logo src="logo.svg" alt="">
         <span class="state-code">ALERT / 01</span>
       </header>
       <div class="state-content fallback-content">

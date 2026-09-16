@@ -6,6 +6,8 @@ A local-only Chrome extension that visually blurs sensitive content on WhatsApp 
 
 - Privacy-first defaults with Master Privacy, both section gates, and every category enabled.
 - Independent List Views and Conversation gates that pause a section without changing its child settings.
+- Keyboard panic shortcut for toggling Master Privacy without opening the popup.
+- Green ON and gray OFF logos in the Chrome toolbar and popup.
 - Automatic protection at `document_start`, including content rendered dynamically by WhatsApp Web.
 - Live setting updates across every open WhatsApp Web tab.
 - Per-element hover reveal that restores blur as soon as the pointer leaves.
@@ -56,6 +58,12 @@ The header toggle pauses or restores all Conversation blur while retaining the s
 
 Delivery or read indicators and edited labels remain visible. Media opened in WhatsApp's fullscreen viewer is intentionally not blurred.
 
+### Keyboard panic shortcut
+
+Press `Ctrl+Shift+P` on Windows, Linux, or ChromeOS, or `Command+Shift+P` on macOS, to toggle Master Privacy from any tab while Chrome is active. Section gates and child settings are retained. The toolbar and popup logos turn green when Master Privacy is on and gray when it is off.
+
+Chrome may leave a suggested shortcut unassigned when it conflicts with another command. The popup displays the active binding; select **SET NOW** or **CHANGE** in its footer to open Chrome's shortcut settings without typing `chrome://extensions/shortcuts` manually.
+
 ## Build and install
 
 1. Run `npm install`.
@@ -76,6 +84,7 @@ The source is organized as follows:
 
 - `src/settings.ts` defines defaults, validation, migration, and persistence.
 - `src/content.ts` applies root privacy state and listens for storage changes.
+- `src/background.ts` handles the keyboard command and keeps the toolbar icon synchronized.
 - `src/popup.ts` manages settings, health checks, recovery injection, and reload fallback.
 - `public/privacy.css` contains the centralized WhatsApp DOM selectors and blur behavior.
 - `public/popup.html` and `public/popup.css` define the popup interface.

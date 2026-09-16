@@ -327,6 +327,30 @@ body[data-enabled="false"] #master-status {
   letter-spacing: 0.08em;
 }
 
+.shortcut-settings {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 7px;
+  padding: 0;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  font-size: inherit;
+  line-height: inherit;
+  cursor: pointer;
+}
+
+.shortcut-settings:hover #shortcut-hint {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.shortcut-settings:focus-visible {
+  outline: 2px solid #8dd4b5;
+  outline-offset: 3px;
+}
+
 .checking,
 .fallback {
   display: flex;

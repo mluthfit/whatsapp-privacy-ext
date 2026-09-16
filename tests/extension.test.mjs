@@ -7,7 +7,25 @@ test("manifest uses the minimum approved MV3 permissions", async () => {
   assert.equal(manifest.manifest_version, 3);
   assert.deepEqual(manifest.permissions.sort(), ["activeTab", "scripting", "storage"]);
   assert.deepEqual(manifest.host_permissions, ["https://web.whatsapp.com/*"]);
+  assert.equal(manifest.background.service_worker, "background.js");
+  assert.deepEqual(manifest.commands["toggle-master-privacy"].suggested_key, {
+    default: "Ctrl+Shift+P",
+    mac: "Command+Shift+P",
+  });
+  assert.equal(manifest.commands["toggle-master-privacy"].description, "Toggle Master Privacy");
+  assert.equal(manifest.commands["toggle-master-privacy"].global, undefined);
   assert.equal(manifest.content_scripts[0].run_at, "document_start");
+});
+
+test("build provides distinct enabled and disabled icon assets", async () => {
+  for (const size of [16, 32, 48, 128]) {
+    const enabled = await readFile(new URL(`../dist/icons/icon-${size}.png`, import.meta.url));
+    const disabled = await readFile(new URL(`../dist/icons/icon-off-${size}.png`, import.meta.url));
+    assert.notDeepEqual(enabled, disabled);
+  }
+
+  const disabledLogo = await readFile(new URL("../dist/logo-off.svg", import.meta.url), "utf8");
+  assert.match(disabledLogo, /#9AA39F/);
 });
 
 test("privacy stylesheet contains every fixture-backed selector contract", async () => {
@@ -169,6 +187,7 @@ test("privacy stylesheet contains every fixture-backed selector contract", async
 
 test("popup exposes independent list and conversation identity controls", async () => {
   const html = await readFile(new URL("../dist/popup.html", import.meta.url), "utf8");
+  const script = await readFile(new URL("../dist/popup.js", import.meta.url), "utf8");
   assert.match(html, /<h2 id="list-views-heading">List Views<\/h2>/);
   assert.doesNotMatch(html, /Lists &amp; Identity/);
   assert.doesNotMatch(html, /<h2[^>]*>Chat list<\/h2>/i);
@@ -181,6 +200,15 @@ test("popup exposes independent list and conversation identity controls", async 
   assert.match(html, /data-setting="conversation\.time"/);
   assert.doesNotMatch(html, />[46] controls</);
   assert.equal(html.match(/<input type="checkbox" data-setting=/g)?.length, 13);
+  assert.equal(html.match(/data-privacy-logo/g)?.length, 3);
+  assert.match(html, /id="shortcut-hint"/);
+  assert.match(html, /id="shortcut-settings-button"/);
+  assert.match(html, /id="shortcut-action">CHANGE</);
+  assert.match(script, /chrome\.commands\.getAll\(\)/);
+  assert.match(script, /chrome\.tabs\.create\(\{ url: "chrome:\/\/extensions\/shortcuts" \}\)/);
+  assert.match(script, /"Panic: Unassigned"/);
+  assert.match(script, /"SET NOW"/);
+  assert.match(script, /logo-off\.svg/);
 });
 
 test("production code contains no networking or remote resources", async () => {

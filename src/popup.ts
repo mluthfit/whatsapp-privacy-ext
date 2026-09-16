@@ -14,6 +14,12 @@ const masterDetail = document.querySelector<HTMLElement>("#master-detail");
 const brandState = document.querySelector<HTMLElement>("#brand-state");
 const chatListStatus = document.querySelector<HTMLElement>("#chat-list-status");
 const conversationStatus = document.querySelector<HTMLElement>("#conversation-status");
+const shortcutHint = document.querySelector<HTMLElement>("#shortcut-hint");
+const shortcutAction = document.querySelector<HTMLElement>("#shortcut-action");
+const shortcutSettingsButton = document.querySelector<HTMLButtonElement>("#shortcut-settings-button");
+const privacyLogos = Array.from(
+  document.querySelectorAll<HTMLImageElement>("img[data-privacy-logo]"),
+);
 const settingInputs = Array.from(
   document.querySelectorAll<HTMLInputElement>("input[data-setting]"),
 );
@@ -64,6 +70,9 @@ function renderSettings(): void {
   }
 
   document.body.dataset.enabled = String(settings.enabled);
+  for (const logo of privacyLogos) {
+    logo.src = settings.enabled ? "logo.svg" : "logo-off.svg";
+  }
   if (masterStatus) masterStatus.textContent = settings.enabled ? "ON" : "OFF";
   if (chatListStatus) {
     chatListStatus.textContent = sectionStatus(settings.chatList.enabled, [
@@ -106,6 +115,16 @@ function renderSettings(): void {
       masterDetail.textContent = "Checking the current tab...";
     }
   }
+}
+
+async function renderShortcutHint(): Promise<void> {
+  if (!shortcutHint) return;
+  const commands = await chrome.commands.getAll();
+  const command = commands.find((item) => item.name === "toggle-master-privacy");
+  shortcutHint.textContent = command?.shortcut
+    ? `Panic: ${command.shortcut}`
+    : "Panic: Unassigned";
+  if (shortcutAction) shortcutAction.textContent = command?.shortcut ? "CHANGE" : "SET NOW";
 }
 
 function isWhatsAppUrl(url?: string): boolean {
@@ -202,9 +221,22 @@ reloadButton?.addEventListener("click", () => {
   void chrome.tabs.reload(activeWhatsAppTabId);
 });
 
+shortcutSettingsButton?.addEventListener("click", () => {
+  if (typeof chrome === "undefined" || !chrome.tabs?.create) return;
+  void chrome.tabs.create({ url: "chrome://extensions/shortcuts" }).catch(() => {
+    if (shortcutHint) shortcutHint.textContent = "Open chrome://extensions/shortcuts";
+    if (shortcutAction) shortcutAction.textContent = "MANUALLY";
+  });
+});
+
 renderSettings();
 
 if (typeof chrome !== "undefined" && chrome.storage?.local) {
+  void renderShortcutHint().catch(() => {
+    if (shortcutHint) shortcutHint.textContent = "Panic shortcut unavailable";
+    if (shortcutAction) shortcutAction.textContent = "OPEN";
+  });
+
   const settingsPromise = WAPrivacy.loadSettings().then((storedSettings) => {
     settings = storedSettings;
     renderSettings();

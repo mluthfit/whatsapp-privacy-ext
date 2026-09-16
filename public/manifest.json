@@ -2,10 +2,22 @@
   "manifest_version": 3,
   "name": "Privacy for WhatsApp Web",
   "description": "Locally blur sensitive content on WhatsApp Web and reveal it on hover.",
-  "version": "0.7.3",
+  "version": "0.8.1",
   "minimum_chrome_version": "105",
   "permissions": ["activeTab", "scripting", "storage"],
   "host_permissions": ["https://web.whatsapp.com/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "commands": {
+    "toggle-master-privacy": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+P",
+        "mac": "Command+Shift+P"
+      },
+      "description": "Toggle Master Privacy"
+    }
+  },
   "action": {
     "default_title": "WhatsApp privacy settings",
     "default_popup": "popup.html",
