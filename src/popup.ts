@@ -7,8 +7,13 @@ const normalView = document.querySelector<HTMLElement>("#normal-view");
 const fallbackView = document.querySelector<HTMLElement>("#fallback-view");
 const checkingView = document.querySelector<HTMLElement>("#checking-view");
 const reloadButton = document.querySelector<HTMLButtonElement>("#reload-button");
+const reloadLabel = document.querySelector<HTMLElement>("#reload-label");
+const reloadAction = document.querySelector<HTMLElement>("#reload-action");
 const masterStatus = document.querySelector<HTMLElement>("#master-status");
 const masterDetail = document.querySelector<HTMLElement>("#master-detail");
+const brandState = document.querySelector<HTMLElement>("#brand-state");
+const chatListStatus = document.querySelector<HTMLElement>("#chat-list-status");
+const conversationStatus = document.querySelector<HTMLElement>("#conversation-status");
 const settingInputs = Array.from(
   document.querySelectorAll<HTMLInputElement>("input[data-setting]"),
 );
@@ -47,6 +52,12 @@ function settingValue(path: WAPrivacy.SettingPath): boolean {
   }
 }
 
+function sectionStatus(enabled: boolean, values: boolean[]): string {
+  if (!enabled) return "OFF";
+  const enabledCount = values.filter(Boolean).length;
+  return enabledCount === values.length ? "ALL ON" : `${enabledCount}/${values.length} ON`;
+}
+
 function renderSettings(): void {
   for (const input of settingInputs) {
     input.checked = settingValue(input.dataset.setting as WAPrivacy.SettingPath);
@@ -54,6 +65,34 @@ function renderSettings(): void {
 
   document.body.dataset.enabled = String(settings.enabled);
   if (masterStatus) masterStatus.textContent = settings.enabled ? "ON" : "OFF";
+  if (chatListStatus) {
+    chatListStatus.textContent = sectionStatus(settings.chatList.enabled, [
+      settings.chatList.name,
+      settings.chatList.avatar,
+      settings.chatList.timeAndUnreadCount,
+      settings.chatList.messagePreview,
+    ]);
+  }
+  if (conversationStatus) {
+    conversationStatus.textContent = sectionStatus(settings.conversation.enabled, [
+      settings.conversation.name,
+      settings.conversation.avatar,
+      settings.conversation.time,
+      settings.conversation.messagesAndCalls,
+      settings.conversation.mediaAndAttachments,
+      settings.conversation.textInput,
+    ]);
+  }
+  if (brandState) {
+    const state = !settings.enabled
+      ? "PAUSED"
+      : tabContext === "active"
+        ? "ACTIVE"
+        : tabContext === "not-whatsapp"
+          ? "READY"
+          : "CHECK";
+    brandState.textContent = `LOCAL / PRIVATE / ${state}`;
+  }
   if (masterDetail) {
     if (!settings.enabled) {
       masterDetail.textContent = "Paused. Your category choices are retained";
@@ -157,7 +196,8 @@ for (const input of settingInputs) {
 reloadButton?.addEventListener("click", () => {
   if (activeWhatsAppTabId === undefined) return;
   reloadButton.disabled = true;
-  reloadButton.textContent = "Reloading...";
+  if (reloadLabel) reloadLabel.textContent = "Reloading WhatsApp Web";
+  if (reloadAction) reloadAction.textContent = "WAIT";
   reloadButton.setAttribute("aria-busy", "true");
   void chrome.tabs.reload(activeWhatsAppTabId);
 });

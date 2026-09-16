@@ -52,36 +52,147 @@ function isInsidePolygon(x, y, points) {
   return inside;
 }
 
+function appendCubic(points, start, control1, control2, end) {
+  for (let step = 1; step <= 18; step += 1) {
+    const t = step / 18;
+    const inverse = 1 - t;
+    points.push([
+      inverse ** 3 * start[0]
+        + 3 * inverse ** 2 * t * control1[0]
+        + 3 * inverse * t ** 2 * control2[0]
+        + t ** 3 * end[0],
+      inverse ** 3 * start[1]
+        + 3 * inverse ** 2 * t * control1[1]
+        + 3 * inverse * t ** 2 * control2[1]
+        + t ** 3 * end[1],
+    ]);
+  }
+}
+
+function makeShieldPolygon({ start, topRight, rightBottom, leftBottom, topLeft }) {
+  const points = [start];
+  appendCubic(points, start, ...topRight);
+  points.push(rightBottom[0]);
+  appendCubic(points, rightBottom[0], ...rightBottom.slice(1));
+  appendCubic(points, rightBottom[3], ...leftBottom);
+  points.push(topLeft[0]);
+  appendCubic(points, topLeft[0], ...topLeft.slice(1));
+  return points;
+}
+
+function distanceToPolygon(x, y, points) {
+  let minimum = Number.POSITIVE_INFINITY;
+  for (let index = 0; index < points.length; index += 1) {
+    const start = points[index];
+    const end = points[(index + 1) % points.length];
+    const dx = end[0] - start[0];
+    const dy = end[1] - start[1];
+    const lengthSquared = dx * dx + dy * dy;
+    const projection = lengthSquared === 0
+      ? 0
+      : Math.max(0, Math.min(1, ((x - start[0]) * dx + (y - start[1]) * dy) / lengthSquared));
+    minimum = Math.min(minimum, Math.hypot(
+      x - (start[0] + projection * dx),
+      y - (start[1] + projection * dy),
+    ));
+  }
+  return minimum;
+}
+
+const outerShield = makeShieldPolygon({
+  start: [196, 12],
+  topRight: [[245, 42], [300, 58], [356, 66]],
+  rightBottom: [[356, 192], [356, 288], [296, 374], [196, 420]],
+  leftBottom: [[96, 374], [36, 288], [36, 192]],
+  topLeft: [[36, 66], [92, 58], [147, 42], [196, 12]],
+});
+const innerShield = makeShieldPolygon({
+  start: [196, 28],
+  topRight: [[242, 55], [293, 70], [340, 78]],
+  rightBottom: [[340, 192], [340, 278], [286, 355], [196, 398]],
+  leftBottom: [[106, 355], [52, 278], [52, 192]],
+  topLeft: [[52, 78], [99, 70], [150, 55], [196, 28]],
+});
+const shieldCore = makeShieldPolygon({
+  start: [196, 51],
+  topRight: [[235, 73], [277, 86], [316, 94]],
+  rightBottom: [[316, 190], [316, 261], [273, 326], [196, 366]],
+  leftBottom: [[119, 326], [76, 261], [76, 190]],
+  topLeft: [[76, 94], [115, 86], [157, 73], [196, 51]],
+});
+
+function makePhonePolygon() {
+  const points = [[7.643, 7.906]];
+  appendCubic(points, points.at(-1), [9.489, 11.535], [12.465, 14.511], [16.094, 16.357]);
+  points.push([18.916, 13.536]);
+  appendCubic(points, points.at(-1), [19.262, 13.19], [19.775, 13.074], [20.224, 13.228]);
+  appendCubic(points, points.at(-1), [21.66, 13.703], [23.212, 13.959], [24.802, 13.959]);
+  appendCubic(points, points.at(-1), [25.508, 13.959], [26.085, 14.536], [26.085, 15.242]);
+  points.push([26.085, 19.718]);
+  appendCubic(points, points.at(-1), [26.085, 20.423], [25.508, 21], [24.802, 21]);
+  appendCubic(points, points.at(-1), [12.76, 21], [3, 11.24], [3, -0.802]);
+  appendCubic(points, points.at(-1), [3, -1.508], [3.577, -2.085], [4.282, -2.085]);
+  points.push([8.771, -2.085]);
+  appendCubic(points, points.at(-1), [9.477, -2.085], [10.054, -1.508], [10.054, -0.802]);
+  appendCubic(points, points.at(-1), [10.054, 0.801], [10.31, 2.34], [10.785, 3.776]);
+  appendCubic(points, points.at(-1), [10.926, 4.225], [10.823, 4.725], [10.464, 5.084]);
+  points.push([7.643, 7.906]);
+
+  return points.map(([x, y]) => [
+    81.751 + ((x + 0.847) / 30.78) * 218.023,
+    90.751 + ((y + 5.932) / 30.78) * 218.023,
+  ]);
+}
+
+const phone = makePhonePolygon();
+
 function makeIcon(size) {
   const stride = size * 4 + 1;
   const pixels = Buffer.alloc(stride * size);
-  const shield = [
-    [0.5, 0.14],
-    [0.78, 0.27],
-    [0.73, 0.61],
-    [0.5, 0.84],
-    [0.27, 0.61],
-    [0.22, 0.27],
-  ];
+  const samplesPerAxis = 4;
+  const sampleCount = samplesPerAxis ** 2;
+  const logoHeight = 0.94;
+  const logoWidth = (392 / 430) * logoHeight;
+  const logoLeft = (1 - logoWidth) / 2;
+  const logoTop = (1 - logoHeight) / 2;
 
   for (let y = 0; y < size; y += 1) {
     pixels[y * stride] = 0;
     for (let x = 0; x < size; x += 1) {
-      const nx = (x + 0.5) / size;
-      const ny = (y + 0.5) / size;
       const offset = y * stride + 1 + x * 4;
-      const edgeX = Math.max(0.13 - nx, nx - 0.87, 0);
-      const edgeY = Math.max(0.13 - ny, ny - 0.87, 0);
-      const inTile = Math.hypot(edgeX, edgeY) <= 0.13;
-      const inShield = isInsidePolygon(nx, ny, shield);
-      const inKeyhole = Math.hypot(nx - 0.5, ny - 0.43) < 0.075
-        || (nx > 0.46 && nx < 0.54 && ny >= 0.43 && ny < 0.66);
+      const totals = [0, 0, 0];
+      let coverage = 0;
 
-      let color = [0, 0, 0, 0];
-      if (inTile) color = [5, 102, 73, 255];
-      if (inShield) color = [237, 247, 240, 255];
-      if (inShield && inKeyhole) color = [5, 102, 73, 255];
-      pixels.set(color, offset);
+      for (let sampleY = 0; sampleY < samplesPerAxis; sampleY += 1) {
+        for (let sampleX = 0; sampleX < samplesPerAxis; sampleX += 1) {
+          const nx = (x + (sampleX + 0.5) / samplesPerAxis) / size;
+          const ny = (y + (sampleY + 0.5) / samplesPerAxis) / size;
+          const vx = ((nx - logoLeft) / logoWidth) * 392;
+          const vy = ((ny - logoTop) / logoHeight) * 430;
+          let color;
+
+          if (isInsidePolygon(vx, vy, outerShield)) color = [18, 61, 49];
+          if (distanceToPolygon(vx, vy, innerShield) <= 4) color = [25, 189, 124];
+          if (isInsidePolygon(vx, vy, innerShield)) color = [7, 95, 69];
+          if (isInsidePolygon(vx, vy, innerShield) && distanceToPolygon(vx, vy, innerShield) <= 4) {
+            color = [25, 189, 124];
+          }
+          if (isInsidePolygon(vx, vy, shieldCore)) color = [8, 124, 88];
+          if (isInsidePolygon(vx, vy, phone)) color = [237, 247, 241];
+
+          if (color) {
+            coverage += 1;
+            for (let channel = 0; channel < 3; channel += 1) totals[channel] += color[channel];
+          }
+        }
+      }
+
+      if (coverage > 0) {
+        pixels[offset] = Math.round(totals[0] / coverage);
+        pixels[offset + 1] = Math.round(totals[1] / coverage);
+        pixels[offset + 2] = Math.round(totals[2] / coverage);
+        pixels[offset + 3] = Math.round((coverage / sampleCount) * 255);
+      }
     }
   }
 

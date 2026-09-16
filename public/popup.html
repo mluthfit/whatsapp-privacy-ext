@@ -8,25 +8,33 @@
   </head>
   <body>
     <main id="checking-view" class="view checking" role="status" aria-live="polite">
-      <div class="checking-rule" aria-hidden="true"></div>
-      <p class="eyebrow">LOCAL VISUAL PRIVACY</p>
-      <h1>Checking this tab</h1>
-      <p>Loading your settings and confirming protection.</p>
+      <header class="state-header">
+        <img class="state-logo" src="logo.svg" alt="">
+        <span class="state-code">CHECK / 00</span>
+      </header>
+      <div class="state-content checking-content">
+        <div class="checking-rule" aria-hidden="true"></div>
+        <div class="state-copy">
+          <p class="eyebrow">LOCAL VISUAL PRIVACY</p>
+          <h1>Checking this tab</h1>
+          <p>Loading your settings and confirming protection.</p>
+        </div>
+      </div>
+      <footer class="checking-footer">
+        <span>No data leaves this browser.</span>
+        <span class="progress-indicator" aria-hidden="true">
+          <i></i><i></i><i></i>
+        </span>
+      </footer>
     </main>
 
-    <main id="normal-view" class="view" hidden>
+    <main id="normal-view" class="view normal" hidden>
       <header class="masthead">
-        <div class="brand-mark" aria-hidden="true">
-          <svg viewBox="0 0 32 32" role="img">
-            <path d="M16 3 26 7.7v8.7C26 22.2 21.9 27 16 29c-5.9-2-10-6.8-10-12.6V7.7L16 3Z"/>
-            <circle cx="16" cy="14" r="2.8"/>
-            <path d="M14.7 16h2.6v6h-2.6z"/>
-          </svg>
-        </div>
-        <div>
-          <p class="eyebrow">LOCAL VISUAL PRIVACY</p>
+        <div class="brand-copy">
+          <p id="brand-state" class="eyebrow">LOCAL / PRIVATE / ACTIVE</p>
           <h1>WhatsApp Privacy</h1>
         </div>
+        <img class="brand-logo" src="logo.svg" alt="">
       </header>
 
       <section class="master-panel" aria-labelledby="master-title">
@@ -37,7 +45,7 @@
           </div>
           <p id="master-detail">Checking the current tab...</p>
         </div>
-        <label class="switch switch-light">
+        <label class="switch master-switch">
           <span class="sr-only">Master Privacy</span>
           <input type="checkbox" data-setting="enabled" checked>
           <span class="switch-track" aria-hidden="true"></span>
@@ -46,11 +54,14 @@
 
       <section class="settings-section" aria-labelledby="list-views-heading">
         <div class="section-heading">
-          <h2 id="list-views-heading">List Views</h2>
-          <label class="switch">
+          <div class="section-title">
+            <span class="section-number" aria-hidden="true">01</span>
+            <h2 id="list-views-heading">List Views</h2>
+          </div>
+          <label class="section-control">
             <span class="sr-only">Enable List Views privacy</span>
             <input type="checkbox" data-setting="chatList.enabled" checked>
-            <span class="switch-track" aria-hidden="true"></span>
+            <span id="chat-list-status" class="section-status">ALL ON</span>
           </label>
         </div>
         <div class="setting-list">
@@ -87,11 +98,14 @@
 
       <section class="settings-section" aria-labelledby="conversation-heading">
         <div class="section-heading">
-          <h2 id="conversation-heading">Conversation</h2>
-          <label class="switch">
+          <div class="section-title">
+            <span class="section-number" aria-hidden="true">02</span>
+            <h2 id="conversation-heading">Conversation</h2>
+          </div>
+          <label class="section-control">
             <span class="sr-only">Enable Conversation privacy</span>
             <input type="checkbox" data-setting="conversation.enabled" checked>
-            <span class="switch-track" aria-hidden="true"></span>
+            <span id="conversation-status" class="section-status">ALL ON</span>
           </label>
         </div>
         <div class="setting-list">
@@ -140,24 +154,32 @@
         </div>
       </section>
 
-      <footer>
-        <span class="hover-dot" aria-hidden="true"></span>
-        Hover an item to reveal it. Data never leaves your browser.
+      <footer class="normal-footer">
+        <span>Hover to reveal protected content.</span>
+        <strong>LOCAL ONLY</strong>
       </footer>
     </main>
 
     <main id="fallback-view" class="view fallback" role="alert" aria-atomic="true" hidden>
-      <div class="fallback-mark" aria-hidden="true">
-        <svg viewBox="0 0 32 32">
-          <path d="M16 3 26 7.7v8.7C26 22.2 21.9 27 16 29c-5.9-2-10-6.8-10-12.6V7.7L16 3Z"/>
-          <path d="M15 9h2v10h-2zm0 12h2v2h-2z"/>
-        </svg>
+      <header class="state-header">
+        <img class="state-logo" src="logo.svg" alt="">
+        <span class="state-code">ALERT / 01</span>
+      </header>
+      <div class="state-content fallback-content">
+        <div class="fallback-rule" aria-hidden="true"><i></i><i></i></div>
+        <div class="state-copy">
+          <p class="eyebrow">ACTION REQUIRED</p>
+          <h1 id="fallback-title">Privacy is not active</h1>
+          <p>The extension could not be applied to the currently open WhatsApp Web tab.</p>
+        </div>
       </div>
-      <p class="eyebrow">ACTION REQUIRED</p>
-      <h1 id="fallback-title">Privacy is not active</h1>
-      <p>The extension could not be applied to the currently open WhatsApp Web tab.</p>
-      <button id="reload-button" type="button" aria-live="polite">Reload WhatsApp Web</button>
-      <small>Your saved privacy settings will be preserved.</small>
+      <div class="fallback-actions">
+        <button id="reload-button" type="button" aria-live="polite">
+          <span id="reload-label">Reload WhatsApp Web</span>
+          <strong id="reload-action">RETRY</strong>
+        </button>
+        <small>Your saved privacy settings will be preserved.</small>
+      </div>
     </main>
 
     <script src="settings.js"></script>
